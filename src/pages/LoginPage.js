@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { Helmet } from 'react-helmet-async';
+import { useNavigate} from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
@@ -9,7 +11,8 @@ import Logo from '../sharedComponents/logo';
 import Iconify from '../sharedComponents/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
-
+import useAuthContext from '../context/useAuthContext';
+import { useEffect } from 'react';
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
@@ -41,7 +44,14 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const mdUp = useResponsive('up', 'md');
+  const { user } = useAuthContext();
+  useEffect(()=>{
+    if(user) {
+      navigate("/dashboard/app");
+    }
+  },[user]);
 
   return (
     <>
