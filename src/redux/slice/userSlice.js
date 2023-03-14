@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { UserApi } from "src/actions/userAction";
+import { UserApi,GetUsers } from "src/actions/userAction";
 
 
 export const userRegister = createAsyncThunk('user/register',async (user) => await UserApi.register(user));
@@ -26,7 +26,8 @@ const userSlice = createSlice({
         },
         removeUserFromList: (state,action) => {
             state.users = state.users.filter((item)=> item._id !== action.payload._id);
-        }    
+        }, 
+    
     },
     extraReducers: (builder) => {
         builder.addCase(userRegister.pending, (state) => state.loading=true )

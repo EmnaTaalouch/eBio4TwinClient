@@ -1,8 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
+/* eslint-disable camelcase */
 import {
   Card,
   Table,
@@ -23,23 +24,30 @@ import {
   TablePagination,
 } from '@mui/material';
 // sharedComponents
+import { UserApi } from '../actions/userAction';
 import Label from '../sharedComponents/label';
 import Iconify from '../sharedComponents/iconify';
 import Scrollbar from '../sharedComponents/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { initializeUseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
 // mock
-import USERLIST from '../_mock/user';
+
 
 // ----------------------------------------------------------------------
 
+
+
+
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
+  { id: 'FullName', label: 'Full Name', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'phone', label: 'Phone', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'isAuthorized', label: 'Authorized', alignRight: false },
+  { id: 'isActive' ,label:'Activated', alignRight: false },
+  
+  
 ];
 
 // ----------------------------------------------------------------------
@@ -74,6 +82,20 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  //------------------------------------
+ // const { user} = useSelector((state)=>state.user)
+
+  const [users,setUsers]=useState([]);
+  
+
+  useEffect(()=>{fetchUser()},[]);
+  
+  const fetchUser =async()=>{
+    const data = await UserApi.getUsers();
+    console.log(data);
+    setUsers(data);
+  };
+  //--------------------------------------
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -87,6 +109,8 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -104,7 +128,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = users.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -140,11 +164,14 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  
 
+  
+  const filteredUsers = applySortFilter(users, getComparator(order, orderBy), filterName);
   const isNotFound = !filteredUsers.length && !!filterName;
+
 
   return (
     <>
@@ -172,40 +199,42 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={users.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                  {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { _id, firstName, lastName, email, phoneNumber, role, image, isAuthorized ,is_active } = row;
+                    const selectedUser = selected.indexOf(_id) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, _id)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={firstName} src={image} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {firstName} {lastName}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
-
+                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{phoneNumber}</TableCell>
+                      
                         <TableCell align="left">{role}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{isAuthorized ? 'Yes' : 'No'}</TableCell>
 
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        <TableCell align="left">{is_active ? 'Yes' : 'No'}</TableCell>
+
+                       
+                        
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -252,7 +281,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
