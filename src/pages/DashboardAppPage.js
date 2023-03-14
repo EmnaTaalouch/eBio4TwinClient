@@ -1,4 +1,8 @@
+/* eslint-disable */
 import { Helmet } from 'react-helmet-async';
+import { useNavigate} from 'react-router-dom';
+import useAuthContext from '../context/useAuthContext';
+import { useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -22,7 +26,16 @@ import {
 
 export default function DashboardAppPage() {
   const theme = useTheme();
-
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(()=>{
+    if(!user) {
+      navigate("/login");
+    }
+  },[user]);
+  if(!user) {
+    return <p>Must login</p>
+  }
   return (
     <>
       <Helmet>
