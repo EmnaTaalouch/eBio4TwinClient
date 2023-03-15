@@ -8,8 +8,8 @@ export const UserApi = {
     const { data } = await api.post('/register', body);
     return data;
   },
-  async getUserById(userId) {
-    const { data } = await api.get(`/profile/${userId}`);
+  async getUserById(token) {
+    const { data } = await api.get(`/profile/${token}`);
     return data;
   },
   async editUserProfile(userId, body) {

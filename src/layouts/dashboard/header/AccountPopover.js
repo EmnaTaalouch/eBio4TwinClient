@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
@@ -24,14 +26,19 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover({ onLogout }) {
   const [open, setOpen] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (value) => {
+    if (value === 'Profile') {
+      navigate('/dashboard/account');
+    }
     setOpen(null);
   };
 
@@ -78,10 +85,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {`${currentUser?.firstName} ${currentUser?.lastName}`}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {currentUser?.email}
           </Typography>
         </Box>
 
@@ -89,7 +96,7 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
+            <MenuItem key={option.label} onClick={() => handleClose(option.label)}>
               {option.label}
             </MenuItem>
           ))}
@@ -97,7 +104,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={onLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </Popover>

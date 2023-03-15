@@ -3,47 +3,58 @@ import { useCallback } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 // @mui
-import { Box, Grid, Card, Stack, Typography, TextField, FormHelperText, Switch } from '@mui/material';
+import { Box, Grid, Card, Stack, Typography, TextField, FormHelperText, Switch, MenuItem } from '@mui/material';
 import { DatePicker, LoadingButton } from '@mui/lab';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import { fData } from '../../utils/formatNumber';
 import UploadAvatar from '../upload/uploadAvatar';
 import PointsCard from './PointsCard';
+import { UserApi } from '../../actions/userAction';
+import { addUser } from '../../redux/slice/userSlice';
 
 // components
 
 // ----------------------------------------------------------------------
-
+const genderType = ['male', 'female', 'non-binary'];
 export default function AccountGeneral() {
-  const user = {};
-
-  const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      firstName: currentUser?.firstName || '',
+      lastName: currentUser?.lastName || '',
+      email: currentUser?.email || '',
+      phoneNumber: currentUser?.phoneNumber || '',
+      cin: currentUser?.cin || '',
+      role: currentUser?.role || '',
+      address: currentUser?.address || '',
+      dateOfBirth: currentUser?.dateOfBirth || '',
+      gender: currentUser?.gender || '',
+      points: currentUser?.points ? currentUser?.points : 72220,
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required('firstName is required'),
+      lastName: Yup.string().required('lastName is required'),
+      address: Yup.string().required('address is required'),
+      gender: Yup.string().required('gender is required'),
+      email: Yup.string().email('please verify your email format').required('email is required'),
+      phoneNumber: Yup.number().required('PhoneNumber is required'),
+      cin: Yup.number().required('PhoneNumber is required'),
+    }),
+    onSubmit: async (formData) => {
+      const data = formData;
+      try {
+        const result = await UserApi.editUserProfile(currentUser?._id, { ...data, role: currentUser.role });
+        console.log(result);
+        dispatch(addUser(result));
+        toast.success('Your account has been successfully updated');
+      } catch (err) {
+        toast.error(err.response.data.message);
+      }
+    },
   });
-
-  const defaultValues = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-    photoURL: user?.photoURL || '',
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || false,
-  };
-
-  const methods = useForm({
-    /* resolver: yupResolver(UpdateUserSchema), */
-    defaultValues,
-  });
-
-  const {
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
 
   const onSubmit = async () => {
     try {
@@ -53,13 +64,13 @@ export default function AccountGeneral() {
     }
   };
 
-  const handleDrop = useCallback(
+  /* const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
 
       if (file) {
         setValue(
-          'photoURL',
+          'image',
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -68,7 +79,7 @@ export default function AccountGeneral() {
     },
     [setValue]
   );
-
+*/
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>
@@ -76,10 +87,10 @@ export default function AccountGeneral() {
           <div>
             <UploadAvatar
               // error={checkError}
-              name="photoURL"
+              name="image"
               accept="image/*"
               maxSize={3145728}
-              onDrop={handleDrop}
+              // onDrop={handleDrop}
               // file={field.value}
             />
 
@@ -112,32 +123,114 @@ export default function AccountGeneral() {
 
       <Grid item xs={12} md={8}>
         <Card sx={{ p: 3 }}>
-          <Box
-            sx={{
-              display: 'grid',
-              rowGap: 3,
-              columnGap: 2,
-              gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
-            }}
-          >
-            <TextField name="firstName" label="first Name" />
-            <TextField name="lastName" label="last Name" />
-            <TextField name="email" label="email adress" />
-            <TextField name="cin" label="cin" />
-            <TextField name="phoneNumber" label="Phone Number" />
-            <TextField name="address" label="Address" />
-            <TextField name="location" label="location" />
+          <form onSubmit={formik.handleSubmit}>
+            <Box
+              sx={{
+                display: 'grid',
+                rowGap: 3,
+                columnGap: 2,
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+              }}
+            >
+              <TextField
+                name="firstName"
+                placeholder="enter your firstName"
+                label="First Name"
+                fullWidth
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                error={formik.errors.firstName}
+                helperText={formik.errors.firstName}
+              />
+              <TextField
+                name="lastName"
+                placeholder="enter your lastName"
+                label="Last Name"
+                fullWidth
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                error={formik.errors.lastName}
+                helperText={formik.errors.lastName}
+              />
+              <TextField
+                name="email"
+                label="Email"
+                placeholder="enter your email adress"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.errors.email}
+                helperText={formik.errors.email}
+              />
+              <TextField
+                name="cin"
+                label="CIN"
+                placeholder="enter your cin"
+                type="number"
+                fullWidth
+                value={formik.values.cin}
+                onChange={formik.handleChange}
+                error={formik.errors.cin}
+                helperText={formik.errors.cin}
+              />
+              <TextField
+                name="phoneNumber"
+                label="Phone Number"
+                placeholder="enter your phoneNumber"
+                fullWidth
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+                error={formik.errors.phoneNumber}
+                helperText={formik.errors.phoneNumber}
+              />
+              <TextField
+                name="address"
+                label="Address"
+                placeholder="enter your address"
+                fullWidth
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                error={formik.errors.address}
+                helperText={formik.errors.address}
+              />
 
-            <TextField name="dateOfBirth" type="date" fullWidth />
-          </Box>
+              <TextField
+                name="dateOfBirth"
+                type="date"
+                fullWidth
+                value={formik.values.dateOfBirth}
+                onChange={formik.handleChange}
+                error={formik.errors.dateOfBirth}
+                helperText={formik.errors.dateOfBirth}
+              />
+              <TextField
+                name="gender"
+                select
+                value={formik.values.gender}
+                onChange={formik.handleChange}
+                error={formik.errors.gender}
+                helperText={formik.errors.gender}
+                variant="outlined"
+                label="Gender"
+                fullWidth
+                placeholder="enter your gender"
+                style={{ textAlign: 'start' }}
+              >
+                {genderType.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
 
-          <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-            <PointsCard total={714000} color="success" icon={'octicon:trophy-24'} />
+            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+              <PointsCard total={formik.values.points} color="success" icon={'octicon:trophy-24'} />
 
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Save Changes
-            </LoadingButton>
-          </Stack>
+              <LoadingButton type="submit" variant="contained">
+                Save Changes
+              </LoadingButton>
+            </Stack>
+          </form>
         </Card>
       </Grid>
     </Grid>
