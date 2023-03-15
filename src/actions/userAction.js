@@ -14,3 +14,14 @@ export const UserApi = {
         return {data} = await api.put(`/${userId}`,body);
     }
 }
+
+// dorra
+
+export const PassApi ={
+    async forgetPassword(email){
+        return {data} = await api.post('/forgetPassword',email);
+    },
+    async resetPassword(newPass){
+        return {data} = await api.post('/newPass/:code/:id',newPass);
+    }
+}
