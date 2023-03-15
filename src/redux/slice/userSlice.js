@@ -2,7 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserApi } from '../../actions/userAction';
 
 export const userRegister = createAsyncThunk('user/register', async (user) => UserApi.register(user));
-export const fetchUsersList = createAsyncThunk('user/listusers', async () => UserApi.getUsers());
+export const fetchUsersList = createAsyncThunk('user/listUsers', async () => {
+  const result = await UserApi.getUsers();
+  console.log(result);
+  return result;
+});
+
 
 const initialState = {
   currentUser: null,
@@ -15,6 +20,14 @@ const userSlice = createSlice({
   reducers: {
     addUser: (state, action) => {
       state.currentUser = action.payload;
+    },refrech: (state, action) => {
+      state.users = action.payload;
+    },
+    addUserList: (state, action) => {
+      state.users = action.payload;
+    },
+    searchUserList: (state, action) => {
+      state.users = action.payload;
     },
     createUserList: (state, action) => {
       state.users.push(action.payload);
@@ -46,5 +59,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser, createUserList, updateUserFromList, removeUserFromList } = userSlice.actions;
+export const { addUser, createUserList, updateUserFromList, removeUserFromList,addUserList ,refrech} = userSlice.actions;
 export default userSlice.reducer;

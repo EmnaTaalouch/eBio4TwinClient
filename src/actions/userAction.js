@@ -16,9 +16,13 @@ export const UserApi = {
     return data;
   },
   async getUsers() {
-    return api.get('/listUsers').then((res) => res.data);
+    const { data } = await api.get('/listUsers');
+    return data;
   },
   async searchUsers(body) {
-    return api.get('/userSearch', body).then((res) => res.data);
+
+    const { data } = await api.get('/userSearch', body)
+    return data;
   },
+
 };

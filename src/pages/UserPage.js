@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 // @mui
 /* eslint-disable camelcase */
 import {
@@ -25,13 +25,14 @@ import {
 } from '@mui/material';
 // sharedComponents
 import { useDispatch, useSelector } from 'react-redux';
-import { UserApi } from '../actions/userAction';
+import { UserApi, api } from '../actions/userAction';
 import Label from '../sharedComponents/label';
 import Iconify from '../sharedComponents/iconify';
 import Scrollbar from '../sharedComponents/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import { fetchUsersList } from '../redux/slice/userSlice';
+import { addUser, addUserList, refrech } from '../redux/slice/userSlice';
+
 // mock
 
 // ----------------------------------------------------------------------
@@ -85,18 +86,35 @@ export default function UserPage() {
 
   // const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-  console.log(users);
+  useEffect(() => { fetchUser() }, []);
 
+  console.log(users);
   const fetchUser = async () => {
     const data = await UserApi.getUsers();
-    console.log(data);
-    // setUsers(data);
-    // lehna n3aytou el fnct fetchUsersList mtaa Slice tel9aha fi 'redux/Slice/UserSlice' bich naamlou refresh lel users list mtaa Selector Slice w n updatiw el data eli fetchineha
-    dispatch(fetchUsersList(data));
+    dispatch(addUserList(data));
   };
+  const handleUpdateUser = async (userId) => {
+    try {
+
+      const data = await api.put(`/accountAuthorization/${userId}`);
+      fetchUser();
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const [name, setName] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await api.get(`/userSearch/${name}`);
+    dispatch(addUserList(response.data));
+  };
+
+  
+
+
   //--------------------------------------
   const [open, setOpen] = useState(null);
 
@@ -187,7 +205,14 @@ export default function UserPage() {
 
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          <form onSubmit={handleSubmit}>
+          
+             
+              
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+              <button type="submit">search</button>
+            
+          </form>
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -230,9 +255,9 @@ export default function UserPage() {
                         <TableCell align="left">{is_active ? 'Yes' : 'No'}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+
+                          {isAuthorized === false && <button onClick={() => { handleUpdateUser(_id) }}>Authorize</button>}
+
                         </TableCell>
                       </TableRow>
                     );
