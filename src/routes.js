@@ -9,8 +9,13 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+
 import ForgetPassPage from './pages/ForgetPassPage';
 import ResetPassPage from './pages/ResetPassPage';
+
+import Register from './components/Register/register';
+import UserAccount from './components/Profile/UserAccount';
+
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +30,7 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'account', element: <UserAccount /> },
       ],
     },
     {
@@ -34,10 +40,16 @@ export default function Router() {
       path: 'forgetPass',
       element: <ForgetPassPage />,
     },
-    // {
-    //   path: 'resetPass/'+ code +'/'+ id,
-    //   element: <ResetPassPage />,
-    // },
+
+     {
+       path: 'resetPass',
+       element: <ResetPassPage />,
+   },
+
+
+    { path: 'register', element: <Register /> },
+
+
     {
       element: <SimpleLayout />,
       children: [

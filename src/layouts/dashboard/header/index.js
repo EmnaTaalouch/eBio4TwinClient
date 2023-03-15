@@ -1,3 +1,7 @@
+/* eslint-disable */
+import { useNavigate } from 'react-router-dom';
+import useAuthContext from '../../../context/useAuthContext';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -43,6 +47,24 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(() => {
+    const em = localStorage.getItem('email');
+    setEmail(JSON.parse(em));
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user]);
+  if (!user) {
+    return <p>.</p>;
+  }
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    location.reload();
+  };
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -59,18 +81,11 @@ export default function Header({ onOpenNav }) {
 
         <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={{
-            xs: 0.5,
-            sm: 1,
-          }}
-        >
+        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <LanguagePopover />
           <NotificationsPopover />
-          <AccountPopover />
+
+          <AccountPopover onLogout={logout} />
         </Stack>
       </StyledToolbar>
     </StyledRoot>

@@ -1,3 +1,7 @@
+/* eslint-disable */
+import { useNavigate} from 'react-router-dom';
+import useAuthContext from '../../context/useAuthContext';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
@@ -31,6 +35,16 @@ NavItem.propTypes = {
 
 function NavItem({ item }) {
   const { title, path, icon, info } = item;
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(()=>{
+    if(!user) {
+      navigate("/login");
+    }
+  },[user]);
+  if(!user) {
+    return <p></p>
+  }
 
   return (
     <StyledNavItem
