@@ -1,12 +1,15 @@
 import ReactDOM from 'react-dom/client';
 
-//
+
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import { Provider } from 'react-redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+
 import { AuthProvider } from './context/AuthProvider';
 
 import { store } from './redux/store';
@@ -18,10 +21,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
     <Provider store={store}>
+
       <AuthProvider>
         <App />
         <ToastContainer />
       </AuthProvider>
+
     </Provider>
   </>
 );

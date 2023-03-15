@@ -1,8 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 // @mui
+/* eslint-disable camelcase */
 import {
   Card,
   Table,
@@ -23,23 +24,26 @@ import {
   TablePagination,
 } from '@mui/material';
 // sharedComponents
+import { useDispatch, useSelector } from 'react-redux';
+import { UserApi, api } from '../actions/userAction';
 import Label from '../sharedComponents/label';
 import Iconify from '../sharedComponents/iconify';
 import Scrollbar from '../sharedComponents/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { addUser, addUserList, refrech } from '../redux/slice/userSlice';
+
 // mock
-import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
+  { id: 'FullName', label: 'Full Name', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'phone', label: 'Phone', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'isAuthorized', label: 'Authorized', alignRight: false },
+  { id: 'isActive', label: 'Activated', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -74,6 +78,44 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  //------------------------------------
+  // hna njib list users eli fiha data eli mawjouda fel redux
+  const { users } = useSelector((state) => state.user);
+  // dispatch hiya method bich nesta3mlou ki bich n updatiw ay action fel slice
+  const dispatch = useDispatch();
+
+  // const [users, setUsers] = useState([]);
+
+  useEffect(() => { fetchUser() }, []);
+
+  console.log(users);
+  const fetchUser = async () => {
+    const data = await UserApi.getUsers();
+    dispatch(addUserList(data));
+  };
+  const handleUpdateUser = async (userId) => {
+    try {
+
+      const data = await api.put(`/accountAuthorization/${userId}`);
+      fetchUser();
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const [name, setName] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await api.get(`/userSearch/${name}`);
+    dispatch(addUserList(response.data));
+  };
+
+  
+
+
+  //--------------------------------------
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -104,7 +146,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = users.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -140,10 +182,9 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
+  const filteredUsers = applySortFilter(users, getComparator(order, orderBy), filterName);
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
@@ -164,7 +205,14 @@ export default function UserPage() {
 
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          <form onSubmit={handleSubmit}>
+          
+             
+              
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+              <button type="submit">search</button>
+            
+          </form>
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -172,45 +220,44 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={users.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                  {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { _id, firstName, lastName, email, phoneNumber, role, image, isAuthorized, is_active } = row;
+                    const selectedUser = selected.indexOf(_id) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, _id)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={firstName} src={image} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {firstName} {lastName}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
+                        <TableCell align="left">{phoneNumber}</TableCell>
 
                         <TableCell align="left">{role}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{isAuthorized ? 'Yes' : 'No'}</TableCell>
 
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        <TableCell align="left">{is_active ? 'Yes' : 'No'}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+
+                          {isAuthorized === false && <button onClick={() => { handleUpdateUser(_id) }}>Authorize</button>}
+
                         </TableCell>
                       </TableRow>
                     );
@@ -252,7 +299,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
