@@ -4,7 +4,11 @@ export const api = axios.create({ baseURL: 'http://localhost:5000/user', respons
 
 
 /* emna */
-export const UserApi = {
+
+  
+
+
+ export const UserApi = {
   async register(body) {
     const { data } = await api.post('/register', body);
     return data;
@@ -31,3 +35,13 @@ export const UserApi = {
 
 
 };
+
+
+export const PassApi ={
+    async forgetPassword(email){
+        return {data} = await api.post('/forgetPassword',email);
+    },
+    async resetPassword(newPass){
+        return {data} = await api.post('/newPass/:code/:id',newPass);
+    }
+}
