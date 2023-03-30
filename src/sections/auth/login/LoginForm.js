@@ -1,12 +1,22 @@
-/* eslint-disable */
+/* eslint-disable no-restricted-globals */
+import * as Yup from 'yup';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+// form
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, Alert, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-// sharedsharedComponents
+// routes
 import axios from 'axios';
-import Iconify from '../../../sharedComponents/iconify';
+import { PATH_AUTH } from '../../../routes/paths';
+// hooks
+import useAuth from '../../../hooks/useAuth';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+// components
+import Iconify from '../../../components/Iconify';
+import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -25,12 +35,12 @@ export default function LoginForm() {
     setPassword(e.target.value);
   };
 
-  const handleClick = async () => {
+  const handleSubmit = async () => {
     console.log(email, password);
 
     const bodyToSend = {
-      email: email,
-      password: password,
+      email,
+      password,
     };
 
     try {
@@ -38,7 +48,7 @@ export default function LoginForm() {
       console.log(result.data);
       localStorage.setItem('token', JSON.stringify(result.data.token));
       localStorage.setItem('email', JSON.stringify(result.data.email));
-      window.location.reload();
+      location.reload();
       navigate('/dashboard/app', { replace: true });
     } catch (err) {
       console.log(err);
@@ -48,7 +58,7 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" onChange={onEmailChange} />
+        <TextField name="email" onChange={onEmailChange} label="Email address" />
 
         <TextField
           name="password"
@@ -69,12 +79,12 @@ export default function LoginForm() {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Checkbox name="remember" label="Remember me" />
-        <Link variant="subtitle2" underline="hover">
+        <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
           Forgot password?
         </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleSubmit}>
         Login
       </LoadingButton>
     </>
