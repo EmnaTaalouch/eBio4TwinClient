@@ -12,6 +12,10 @@ export const UserApi = {
     const { data } = await api.get(`/profile/${token}`);
     return data;
   },
+  async getUserByRole(role) {
+    const { data } = await api.get(`/getUserByRole?role=${role}`);
+    return data;
+  },
   async editUserProfile(userId, body) {
     const { data } = await api.put(`/${userId}`, body);
     return data;

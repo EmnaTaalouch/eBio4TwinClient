@@ -11,6 +11,7 @@ const initialState = {
   currentUser: null,
   users: [],
   loading: false,
+  step: false,
 };
 const userSlice = createSlice({
   name: 'user',
@@ -18,6 +19,7 @@ const userSlice = createSlice({
   reducers: {
     addUser: (state, action) => {
       state.currentUser = action.payload;
+      state.step = true;
     },
     createUserList: (state, action) => {
       state.users.push(action.payload);
