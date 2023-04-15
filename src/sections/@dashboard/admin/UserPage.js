@@ -22,17 +22,23 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  TextField,
+  OutlinedInput,
+  alpha,
 } from '@mui/material';
 // sharedComponents
 import { useDispatch, useSelector } from 'react-redux';
+import { styled } from '@mui/styles';
 import { UserApi, api } from '../../../actions/userAction';
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
+
 // sections
 // import { UserListHead, UserListToolbar } from '../user/';
 import { addUser, addUserList } from '../../../redux/slices/userSlice';
 import UserListHead from '../user/UserListHead';
 import UserListToolbar from '../user/UserListToolbar';
+
 
 // mock
 
@@ -44,10 +50,26 @@ const TABLE_HEAD = [
   { id: 'phone', label: 'Phone', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'isAuthorized', label: 'Authorized', alignRight: false },
-  { id: 'isActive', label: 'Activated', alignRight: false },
+  { id: 'isActive', label: '', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
+const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
+  width: 240,
+  transition: theme.transitions.create(['box-shadow', 'width'], {
+    easing: theme.transitions.easing.easeInOut,
+    duration: theme.transitions.duration.shorter,
+  }),
+  '&.Mui-focused': {
+    width: 320,
+    boxShadow: theme.customShadows.z8,
+  },
+  '& fieldset': {
+    borderWidth: `1px !important`,
+    borderColor: `${alpha(theme.palette.grey[500], 0.32)} !important`,
+  },
+}));
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -201,12 +223,21 @@ export default function UserPage() {
           </Button>
         </Stack>
 
+
+
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-          <form onSubmit={handleSubmit}>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-            <button type="submit">search</button>
+              <form onSubmit={handleSubmit}>
+            <StyledSearch
+            sx={{
+              mx: 1 
+            }}
+              type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Search user..."
+            /><Button variant="contained" type="submit" sx={{height: 50 , width:100}}> search </Button>
           </form>
+          <br />
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -246,17 +277,17 @@ export default function UserPage() {
 
                         <TableCell align="left">{isAuthorized ? 'Yes' : 'No'}</TableCell>
 
-                        <TableCell align="left">{is_active ? 'Yes' : 'No'}</TableCell>
+                       {/* <TableCell align="left">{is_active ? 'Yes' : 'No'}</TableCell> */}
 
-                        <TableCell align="right">
+                        <TableCell align="left">
                           {isAuthorized === false && (
-                            <button
+                            <Button
                               onClick={() => {
                                 handleUpdateUser(_id);
                               }}
                             >
                               Authorize
-                            </button>
+                            </Button>
                           )}
                         </TableCell>
                       </TableRow>

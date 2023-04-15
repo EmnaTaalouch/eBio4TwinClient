@@ -40,6 +40,11 @@ export const PATH_DASHBOARD = {
     doctors: path(ROOTS_DASHBOARD, '/appointment/doctors'),
     calendarN: path(ROOTS_DASHBOARD,'/appointment/calendarN')
   },
+  cxpForm:{
+  list:path(ROOTS_DASHBOARD, '/cxpForm/list'),
+  addCxpForm:path(ROOTS_DASHBOARD, '/cxpForm/addCxpForm/:id'),
+  updateCxpForm:path(ROOTS_DASHBOARD, '/cxpForm/updateCxpForm/:id')
+  },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),

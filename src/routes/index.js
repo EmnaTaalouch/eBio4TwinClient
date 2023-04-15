@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
+
 import UserPage from '../sections/@dashboard/admin/UserPage';
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
@@ -13,6 +14,7 @@ import AuthGuard from '../guards/AuthGuard';
 import { PATH_AFTER_LOGIN } from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+
 
 // ----------------------------------------------------------------------
 
@@ -94,6 +96,15 @@ export default function Router() {
             { path: ':name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> },
           ],
+        }, {
+          path: 'cxpForm', 
+          children: [
+            { element: <Navigate to="/cxpForm/list" replace />, index: true },
+            { path: 'list',  element:<CxpForm/> },
+            { path: 'addCxpForm/:id', element:<AddCxpForm/> },
+            { path: 'updateCxpForm/:id', element: <UpdateCxpForm/> }
+          ]
+          
         },
         {
           path: 'appointment',
@@ -218,6 +229,11 @@ const AppointmentNutritionistList = Loadable(
 const AppointmentCreate = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentCreate')));
 const DoctorList = Loadable(lazy(() => import('../pages/dashboard/Appointment/DoctorList')));
 const CalendarNutritionist = Loadable(lazy(() => import('../pages/dashboard/Appointment/CalendarNutritionist')));
+
+// reviews
+const CxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/CxpForm')));
+const AddCxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/AddCxpForm')));
+const UpdateCxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/UpdateCxpForm')));
 
 // USER
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
