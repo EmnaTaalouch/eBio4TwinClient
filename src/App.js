@@ -1,16 +1,21 @@
-import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
 // routes
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Router from './routes';
 // theme
 import ThemeProvider from './theme';
-// sharedComponents
-import { StyledChart } from './sharedComponents/chart';
-import ScrollToTop from './sharedComponents/scroll-to-top';
+// components
+import Settings from './components/settings';
+import RtlLayout from './components/RtlLayout';
+import { ChartStyle } from './components/chart';
+import ScrollToTop from './components/ScrollToTop';
+import { ProgressBarStyle } from './components/ProgressBar';
+import NotistackProvider from './components/NotistackProvider';
+import ThemeColorPresets from './components/ThemeColorPresets';
+import ThemeLocalization from './components/ThemeLocalization';
+import MotionLazyContainer from './components/animate/MotionLazyContainer';
 import { UserApi } from './actions/userAction';
-import { addUser } from './redux/slice/userSlice';
+import { addUser } from './redux/slices/userSlice';
 
 // ----------------------------------------------------------------------
 
@@ -26,19 +31,27 @@ export default function App() {
         .catch(() => {
           localStorage.removeItem('token');
           // eslint-disable-next-line no-restricted-globals
-          location.reload();
+          // location.reload();
         });
     }
   }, []);
   return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <ThemeProvider>
-          <ScrollToTop />
-          <StyledChart />
-          <Router />
-        </ThemeProvider>
-      </BrowserRouter>
-    </HelmetProvider>
+    <ThemeProvider>
+      <ThemeColorPresets>
+        <ThemeLocalization>
+          <RtlLayout>
+            <NotistackProvider>
+              <MotionLazyContainer>
+                <ProgressBarStyle />
+                <ChartStyle />
+                <Settings />
+                <ScrollToTop />
+                <Router />
+              </MotionLazyContainer>
+            </NotistackProvider>
+          </RtlLayout>
+        </ThemeLocalization>
+      </ThemeColorPresets>
+    </ThemeProvider>
   );
 }

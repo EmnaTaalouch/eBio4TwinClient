@@ -1,50 +1,73 @@
+/* eslint-disable no-restricted-globals */
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
-import { useNavigate } from 'react-router-dom';
+import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
+// routes
 import { useSelector } from 'react-redux';
-import account from '../../../_mock/account';
+import { PATH_DASHBOARD, PATH_AUTH } from '../../../routes/paths';
+// hooks
+
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+// components
+import MyAvatar from '../../../components/MyAvatar';
+import MenuPopover from '../../../components/MenuPopover';
+import { IconButtonAnimate } from '../../../components/animate';
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
     label: 'Home',
-    icon: 'eva:home-fill',
+    linkTo: '/',
   },
   {
     label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
+    linkTo: PATH_DASHBOARD.user.account,
   },
 ];
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover({ onLogout }) {
-  const [open, setOpen] = useState(null);
-  const { currentUser } = useSelector((state) => state.user);
+export default function AccountPopover() {
   const navigate = useNavigate();
+
+  const { currentUser } = useSelector((state) => state.user);
+  const isMountedRef = useIsMountedRef();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = (value) => {
-    if (value === 'Profile') {
-      navigate('/dashboard/account');
-    }
+  const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem('token');
+      localStorage.removeItem('email');
+      location.reload();
+      navigate(PATH_AUTH.login, { replace: true });
+
+      if (isMountedRef.current) {
+        handleClose();
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+    }
   };
 
   return (
     <>
-      <IconButton
+      <IconButtonAnimate
         onClick={handleOpen}
         sx={{
           p: 0,
@@ -61,34 +84,29 @@ export default function AccountPopover({ onLogout }) {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
-      </IconButton>
+        <MyAvatar />
+      </IconButtonAnimate>
 
-      <Popover
+      <MenuPopover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 0,
-            mt: 1.5,
-            ml: 0.75,
-            width: 180,
-            '& .MuiMenuItem-root': {
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
+        sx={{
+          p: 0,
+          mt: 1.5,
+          ml: 0.75,
+          '& .MuiMenuItem-root': {
+            typography: 'body2',
+            borderRadius: 0.75,
           },
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {`${currentUser?.firstName} ${currentUser?.lastName}`}
+            {currentUser?.firstName + currentUser?.lastName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {currentUser?.email}
+            {currentUser?.role}
           </Typography>
         </Box>
 
@@ -96,7 +114,7 @@ export default function AccountPopover({ onLogout }) {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={() => handleClose(option.label)}>
+            <MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
               {option.label}
             </MenuItem>
           ))}
@@ -104,10 +122,10 @@ export default function AccountPopover({ onLogout }) {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={onLogout} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
-      </Popover>
+      </MenuPopover>
     </>
   );
 }
