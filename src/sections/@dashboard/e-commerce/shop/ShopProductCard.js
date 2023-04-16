@@ -10,7 +10,7 @@ import { fCurrency } from '../../../../utils/formatNumber';
 // components
 import Label from '../../../../components/Label';
 import Image from '../../../../components/Image';
-import { ColorPreview } from '../../../../components/color-utils';
+// import { ColorPreview } from '../../../../components/color-utils';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  const { name, cover, price, status, priceSale,description,quantity } = product;
 
   const linkTo = PATH_DASHBOARD.eCommerce.view(paramCase(name));
 
@@ -29,7 +29,7 @@ export default function ShopProductCard({ product }) {
         {status && (
           <Label
             variant="filled"
-            color={(status === 'sale' && 'error') || 'info'}
+            // color={(status === 'sale' && 'error') || 'info'}
             sx={{
               top: 16,
               right: 16,
@@ -52,7 +52,7 @@ export default function ShopProductCard({ product }) {
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={colors} />
+          {/* <ColorPreview colors={colors} /> */}
 
           <Stack direction="row" spacing={0.5}>
             {priceSale && (
@@ -62,6 +62,7 @@ export default function ShopProductCard({ product }) {
             )}
 
             <Typography variant="subtitle1">{fCurrency(price)}</Typography>
+            <p style={{position:"absolute",right:"20px",fontSize:"12px"}}>quantity : {quantity}</p>
           </Stack>
         </Stack>
       </Stack>
