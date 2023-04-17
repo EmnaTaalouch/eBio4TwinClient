@@ -128,6 +128,7 @@ export const userNavConfig = [
   {
     subheader: 'user management',
     items: [
+      { title: 'Shop', path: PATH_DASHBOARD.eCommerce.shop, icon: ICONS.invoice},
       // Recommandation
       {
         title: 'Recommandation',
@@ -204,6 +205,21 @@ export const adminNavConfig = [
     items: [
       { title: 'user list', path: PATH_DASHBOARD.user.list, icon: ICONS.user },
     { title: 'Reviews', path: PATH_DASHBOARD.cxpForm.list,icon: ICONS.blog }],
+  },
+];
+
+export const farmerNavConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Dashboard',
+    items: [{ title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard }],
+  },
+  {
+    subheader: 'Account Management',
+    items: [
+      { title: 'Manage products', path: PATH_DASHBOARD.eCommerce.list, icon: ICONS.items },
+    { title: 'Add product', path: PATH_DASHBOARD.eCommerce.new,icon: ICONS.blog }],
   },
 ];
 

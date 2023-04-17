@@ -17,7 +17,7 @@ import Logo from '../../../components/Logo';
 import Scrollbar from '../../../components/Scrollbar';
 import { NavSectionVertical } from '../../../components/nav-section';
 //
-import navConfig, { adminNavConfig, nutritionistNavConfig, userNavConfig } from './NavConfig';
+import navConfig, { adminNavConfig, farmerNavConfig, nutritionistNavConfig, userNavConfig } from './NavConfig';
 import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
@@ -59,6 +59,9 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 
       case 'user':
         return userNavConfig;
+
+      case 'farmer':
+        return farmerNavConfig;
 
       case 'nutritionist':
         return nutritionistNavConfig;
