@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import orderBy from 'lodash/orderBy';
 // form
 import { useForm } from 'react-hook-form';
@@ -7,6 +8,7 @@ import { Container, Typography, Stack } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProducts, filterProducts } from '../../redux/slices/product';
+import { UserApi } from '../../actions/userAction';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -29,7 +31,8 @@ import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 
 export default function EcommerceShop() {
   const { themeStretch } = useSettings();
-
+  const [prods,setProds]=useState([]);
+  const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -63,6 +66,9 @@ export default function EcommerceShop() {
 
   useEffect(() => {
     dispatch(getProducts());
+    const token = localStorage.getItem('token');
+    console.log(currentUser._id)
+    tryFetch();
   }, [dispatch]);
 
   useEffect(() => {
@@ -103,6 +109,12 @@ export default function EcommerceShop() {
   const handleRemoveRating = () => {
     setValue('rating', '');
   };
+
+  const tryFetch = async () => {
+    const response = await axios.get('http://localhost:5000/product/list');
+    console.log(response.data);
+    setProds(response.data);
+  }
 
   return (
     <Page title="Ecommerce: Shop">
@@ -163,8 +175,7 @@ export default function EcommerceShop() {
             </>
           )}
         </Stack>
-
-        <ShopProductList products={filteredProducts} loading={!products.length && isDefault} />
+        <ShopProductList products={prods}  />
         <CartWidget />
       </Container>
     </Page>
@@ -188,36 +199,36 @@ function applyFilter(products, sortBy, filters) {
     products = orderBy(products, ['price'], ['asc']);
   }
   // FILTER PRODUCTS
-  if (filters.gender.length > 0) {
-    products = products.filter((product) => filters.gender.includes(product.gender));
-  }
-  if (filters.category !== 'All') {
-    products = products.filter((product) => product.category === filters.category);
-  }
-  if (filters.colors.length > 0) {
-    products = products.filter((product) => product.colors.some((color) => filters.colors.includes(color)));
-  }
-  if (filters.priceRange) {
-    products = products.filter((product) => {
-      if (filters.priceRange === 'below') {
-        return product.price < 25;
-      }
-      if (filters.priceRange === 'between') {
-        return product.price >= 25 && product.price <= 75;
-      }
-      return product.price > 75;
-    });
-  }
-  if (filters.rating) {
-    products = products.filter((product) => {
-      const convertRating = (value) => {
-        if (value === 'up4Star') return 4;
-        if (value === 'up3Star') return 3;
-        if (value === 'up2Star') return 2;
-        return 1;
-      };
-      return product.totalRating > convertRating(filters.rating);
-    });
-  }
+  // if (filters.gender.length > 0) {
+  //   products = products.filter((product) => filters.gender.includes(product.gender));
+  // }
+  // if (filters.category !== 'All') {
+  //   products = products.filter((product) => product.category === filters.category);
+  // }
+  // if (filters.colors.length > 0) {
+  //   products = products.filter((product) => product.colors.some((color) => filters.colors.includes(color)));
+  // }
+  // if (filters.priceRange) {
+  //   products = products.filter((product) => {
+  //     if (filters.priceRange === 'below') {
+  //       return product.price < 25;
+  //     }
+  //     if (filters.priceRange === 'between') {
+  //       return product.price >= 25 && product.price <= 75;
+  //     }
+  //     return product.price > 75;
+  //   });
+  // }
+  // if (filters.rating) {
+  //   products = products.filter((product) => {
+  //     const convertRating = (value) => {
+  //       if (value === 'up4Star') return 4;
+  //       if (value === 'up3Star') return 3;
+  //       if (value === 'up2Star') return 2;
+  //       return 1;
+  //     };
+  //     return product.totalRating > convertRating(filters.rating);
+  //   });
+  // }
   return products;
 }

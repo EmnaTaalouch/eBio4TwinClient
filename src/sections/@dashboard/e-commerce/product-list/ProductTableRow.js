@@ -1,3 +1,4 @@
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { sentenceCase } from 'change-case';
@@ -27,7 +28,7 @@ ProductTableRow.propTypes = {
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, cover, createdAt, inventoryType, price } = row;
+  const { _id, name, cover, date, quantity, price } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -38,7 +39,14 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
   };
-
+  const deleteProduct = async() => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/product/delete/${_id}`);
+      window.location.reload();
+    } catch(e) {
+      console.log(e);
+    }
+  }
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
@@ -52,18 +60,12 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
         </Typography>
       </TableCell>
 
-      <TableCell>{fDate(createdAt)}</TableCell>
+      <TableCell>{fDate(date)}</TableCell>
 
       <TableCell align="center">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={
-            (inventoryType === 'out_of_stock' && 'error') || (inventoryType === 'low_stock' && 'warning') || 'success'
-          }
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {inventoryType ? sentenceCase(inventoryType) : ''}
-        </Label>
+      <Typography variant="subtitle2" noWrap>
+          {quantity}
+        </Typography>
       </TableCell>
 
       <TableCell align="right">{fCurrency(price)}</TableCell>
@@ -77,8 +79,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
             <>
               <MenuItem
                 onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
+                  deleteProduct();
                 }}
                 sx={{ color: 'error.main' }}
               >
@@ -89,6 +90,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
                 onClick={() => {
                   onEditRow();
                   handleCloseMenu();
+                  
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />

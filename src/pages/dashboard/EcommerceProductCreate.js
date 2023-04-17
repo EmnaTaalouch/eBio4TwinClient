@@ -24,7 +24,7 @@ export default function EcommerceProductCreate() {
   const { name } = useParams();
   const { products } = useSelector((state) => state.product);
   const isEdit = pathname.includes('edit');
-  const currentProduct = products.find((product) => paramCase(product.name) === name);
+ // const currentProduct = products.find((product) => paramCase(product.name) === name);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -45,7 +45,8 @@ export default function EcommerceProductCreate() {
           ]}
         />
 
-        <ProductNewEditForm isEdit={isEdit} currentProduct={currentProduct} />
+        <ProductNewEditForm isEdit={isEdit}  />
+        {/* currentProduct={currentProduct} */}
       </Container>
     </Page>
   );

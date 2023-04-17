@@ -44,7 +44,7 @@ import { ProductTableRow, ProductTableToolbar } from '../../sections/@dashboard/
 const TABLE_HEAD = [
   { id: 'name', label: 'Product', align: 'left' },
   { id: 'createdAt', label: 'Create at', align: 'left' },
-  { id: 'inventoryType', label: 'Status', align: 'center', width: 180 },
+  { id: 'inventoryType', label: 'Quantity', align: 'center', width: 180 },
   { id: 'price', label: 'Price', align: 'right' },
   { id: '' },
 ];
@@ -90,6 +90,7 @@ export default function EcommerceProductList() {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("products: ", products)
     if (products.length) {
       setTableData(products);
     }
@@ -199,7 +200,7 @@ export default function EcommerceProductList() {
                     .map((row, index) =>
                       row ? (
                         <ProductTableRow
-                          key={row.id}
+                          key={row._id}
                           row={row}
                           selected={selected.includes(row.id)}
                           onSelectRow={() => onSelectRow(row.id)}
