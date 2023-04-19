@@ -119,6 +119,8 @@ export default function CxpForm() {
             New Review
           </Button>
 
+          
+
 
 
 
@@ -209,7 +211,10 @@ export default function CxpForm() {
                             <Button onClick={() => navigate(`/dashboard/cxpForm/updateCxpForm/${review._id}`)}>Update</Button>
                           }
 
-                          <Button> Show Order</Button>
+                          {currentUser._id === review.userId &&
+                            <Button onClick={() => navigate(`/dashboard/e-commerce/showProducts/${review.refOrder}`) }> Show Order </Button>
+
+                          }
 
 
                         </>

@@ -97,7 +97,7 @@ export default function ShopProductCard({ product }) {
             <p style={{position:"absolute",right:"20px",fontSize:"12px"}}>quantity : {quantity}</p>
           </Stack>
         </Stack>
-        <Button onClick={()=>addToBasket({_id})} disabled={{quantity}===0} >buy</Button>
+        <Button onClick={()=>addToBasket({_id})} disabled={{quantity}===0} >Add to basket</Button>
       </Stack>
     </Card>
   );

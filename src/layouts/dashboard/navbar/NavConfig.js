@@ -146,6 +146,7 @@ export const userNavConfig = [
           { title: 'Home', path: PATH_DASHBOARD.eCommerce.shop },
           { title: 'Questions Forum', path: PATH_DASHBOARD.question.forum },
           { title: 'Appointments', path: PATH_DASHBOARD.appointment.list },
+          { title: 'Orders', path: PATH_DASHBOARD.eCommerce.orderList },
           { title: 'Reviews', path: PATH_DASHBOARD.cxpForm.list },
           { title: 'Private Messages', path: PATH_DASHBOARD.chat.root },
           { title: 'Doctors', path: PATH_DASHBOARD.appointment.doctors },
@@ -189,6 +190,7 @@ export const nutritionistNavConfig = [
         path: PATH_DASHBOARD.eCommerce.root,
         icon: ICONS.cart,
       },
+      
     ],
   },
 ];

@@ -6,6 +6,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import {orderApi} from '../../actions/basketAction'
 
 
+
 const Basket = () => {
   
   const [products, setProducts] = useState([]);
@@ -29,15 +30,22 @@ const Basket = () => {
       }, []);
 //   },[]);
 
-  const deletFromBasket = async (id) => {
+  const deletFromBasket = async ( id )  =>  {
+
     try {
+
+      
+      
+      console.log(id);
+      
       const response = await orderApi.deleteFromBasket(userId,id)
+      
       
       fetchBasket();
       
       
       
-    //   // console.log(response)
+      console.log(response)
     //   setProducts(response);
     } catch (error) {
       console.error('Failed delete product from the basket:', error);
@@ -56,6 +64,7 @@ const Basket = () => {
           <TableCell>Price</TableCell>
           <TableCell>Quantity</TableCell>
           <TableCell>Total price</TableCell>
+          <TableCell />
         </TableRow>
       </TableHead>
     
@@ -64,11 +73,11 @@ const Basket = () => {
         {products.map((product) => (
           <TableRow key={product._id}>
             <TableCell>{product.name}</TableCell>
-            <TableCell>{product.price}</TableCell>
+            <TableCell>{product.price}</TableCell>  
             <TableCell>{product.quantity}</TableCell>
             <TableCell>{product.quantity * product.price}</TableCell>
             <TableCell>
-                <Button variant="contained" color="error" onClick={()=> deletFromBasket(product._id)} >
+                <Button variant="contained" color="error"  onClick={( ) => deletFromBasket(product.productId)} >
                   Delete
                 </Button>
               </TableCell>
