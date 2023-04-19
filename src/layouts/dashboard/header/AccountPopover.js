@@ -54,7 +54,7 @@ export default function AccountPopover() {
       localStorage.removeItem('token');
       localStorage.removeItem('email');
       location.reload();
-      navigate(PATH_AUTH.login, { replace: true });
+      navigate(PATH_DASHBOARD.general.app);
 
       if (isMountedRef.current) {
         handleClose();
@@ -103,7 +103,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {currentUser?.firstName + currentUser?.lastName}
+            {`${currentUser?.firstName} ${currentUser?.lastName}`}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {currentUser?.role}

@@ -15,7 +15,6 @@ import { PATH_AFTER_LOGIN } from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
-
 // ----------------------------------------------------------------------
 
 const Loadable = (Component) => (props) => {
@@ -84,7 +83,7 @@ export default function Router() {
             { path: 'product/edit/:id', element: <EcommerceProductEdit /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
             { path: 'basket', element: <Basket /> },
-            { path: 'order', element: <Order /> }
+            { path: 'order', element: <Order /> },
           ],
         },
         {
@@ -98,15 +97,15 @@ export default function Router() {
             { path: ':name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> },
           ],
-        }, {
-          path: 'cxpForm', 
+        },
+        {
+          path: 'cxpForm',
           children: [
             { element: <Navigate to="/cxpForm/list" replace />, index: true },
-            { path: 'list',  element:<CxpForm/> },
-            { path: 'addCxpForm/:id', element:<AddCxpForm/> },
-            { path: 'updateCxpForm/:id', element: <UpdateCxpForm/> }
-          ]
-          
+            { path: 'list', element: <CxpForm /> },
+            { path: 'addCxpForm/:id', element: <AddCxpForm /> },
+            { path: 'updateCxpForm/:id', element: <UpdateCxpForm /> },
+          ],
         },
         {
           path: 'appointment',
@@ -118,6 +117,28 @@ export default function Router() {
             { path: 'book/:id/doctorList', element: <AppointmentCreate /> },
             { path: 'doctors', element: <DoctorList /> },
             { path: 'calendarN', element: <CalendarNutritionist /> },
+          ],
+        },
+        {
+          path: 'appointment',
+          children: [
+            { element: <Navigate to="/appointment/list" replace />, index: true },
+            { path: 'list', element: <AppointmentList /> },
+            { path: 'listN', element: <AppointmentNutritionistList /> },
+            { path: 'book', element: <AppointmentCreate /> },
+            { path: 'book/:id/doctorList', element: <AppointmentCreate /> },
+            { path: 'doctors', element: <DoctorList /> },
+            { path: 'calendarN', element: <CalendarNutritionist /> },
+          ],
+        },
+        {
+          path: 'question',
+          children: [
+            { element: <Navigate to="/question/forum" replace />, index: true },
+            { path: 'forum', element: <QuestionForum /> },
+            { path: 'forumN', element: <QuestionNutritionistForum /> },
+            { path: 'new', element: <QuestionNew /> },
+            { path: 'detail/:id', element: <QuestionDetails /> },
           ],
         },
         {
@@ -213,7 +234,7 @@ const EcommerceProductEdit = Loadable(lazy(() => import('../pages/dashboard/Ecom
 const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductCreate')));
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const Basket = Loadable(lazy(() => import('../pages/dashboard/Basket')));
-const Order = Loadable(lazy(()=> import('../pages/dashboard/Order')));
+const Order = Loadable(lazy(() => import('../pages/dashboard/Order')));
 
 // INVOICE
 const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')));
@@ -225,6 +246,12 @@ const InvoiceEdit = Loadable(lazy(() => import('../pages/dashboard/InvoiceEdit')
 const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
 const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
+
+// QUESTION
+const QuestionForum = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionForum')));
+const QuestionNutritionistForum = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionNutritionistForum')));
+const QuestionNew = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionNew')));
+const QuestionDetails = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionDetails')));
 
 // APPOINTMENT
 const AppointmentList = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentList')));

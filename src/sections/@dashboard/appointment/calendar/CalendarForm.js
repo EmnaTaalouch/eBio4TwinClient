@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import merge from 'lodash/merge';
@@ -7,44 +8,48 @@ import { useSnackbar } from 'notistack';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Box, Stack, Button, Tooltip, TextField, IconButton, DialogActions } from '@mui/material';
-import { LoadingButton, MobileDateTimePicker } from '@mui/lab';
+import {
+  Box,
+  Stack,
+  Button,
+  Tooltip,
+  TextField,
+  IconButton,
+  DialogActions,
+  Autocomplete,
+  FormHelperText,
+  styled,
+  Typography,
+} from '@mui/material';
+import { DatePicker, LoadingButton, MobileDateTimePicker, TimePicker } from '@mui/lab';
 // redux
-import { useDispatch } from '../../../../redux/store';
-import { createEvent, updateEvent, deleteEvent } from '../../../../redux/slices/calendar';
+import { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from '../../../../redux/store';
+import {
+  createAppointmentFromCalendar,
+  updateAppointmentFromCalendar,
+  deleteAppointmentFromCalendae,
+} from '../../../../redux/slices/appointmentSlice';
 // components
 import Iconify from '../../../../components/Iconify';
 import { ColorSinglePicker } from '../../../../components/color-utils';
 import { FormProvider, RHFTextField, RHFSwitch } from '../../../../components/hook-form';
+import { AppointmentApi } from '../../../../actions/appointmentAction';
+import { PATH_DASHBOARD } from '../../../../routes/paths';
+import Editor from '../../../../components/editor';
+import { UserApi } from '../../../../actions/userAction';
 
 // ----------------------------------------------------------------------
 
-const COLOR_OPTIONS = [
-  '#00AB55', // theme.palette.primary.main,
-  '#1890FF', // theme.palette.info.main,
-  '#54D62C', // theme.palette.success.main,
-  '#FFC107', // theme.palette.warning.main,
-  '#FF4842', // theme.palette.error.main
-  '#04297A', // theme.palette.info.darker
-  '#7A0C2E', // theme.palette.error.darker
-];
+const LabelStyle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.subtitle2,
+  color: theme.palette.text.secondary,
+  marginBottom: theme.spacing(1),
+}));
 
-const getInitialValues = (event, range) => {
-  const _event = {
-    title: '',
-    description: '',
-    textColor: '#1890FF',
-    allDay: false,
-    start: range ? new Date(range.start) : new Date(),
-    end: range ? new Date(range.end) : new Date(),
-  };
-
-  if (event || range) {
-    return merge({}, _event, event);
-  }
-
-  return _event;
-};
+const DateFix = (date) => new Date(date).setDate(new Date(date).getDate() + 1);
+const DateUpdate = (date) => new Date(date).setDate(new Date(date).getDate() - 1);
 
 // ----------------------------------------------------------------------
 
@@ -61,117 +66,182 @@ export default function CalendarForm({ event, range, onCancel }) {
 
   const isCreating = Object.keys(event).length === 0;
 
-  const EventSchema = Yup.object().shape({
-    title: Yup.string().max(255).required('Title is required'),
-    description: Yup.string().max(5000),
-  });
+  const [listofClient, setListofClient] = useState([]);
+  const { currentUser } = useSelector((state) => state.user);
+  const isLoading = useSelector((state) => state.appointment.isLoading);
 
-  const methods = useForm({
-    resolver: yupResolver(EventSchema),
-    defaultValues: getInitialValues(event, range),
-  });
+  const formik = useFormik({
+    initialValues: {
+      dateApt: !isCreating ? DateUpdate(event?.dateApt) : range ? range?.start : '',
+      timeApt: isCreating ? '' : parseInt(event?.timeApt, 10),
+      user: isCreating ? null : event?.client,
+      locationApt: isCreating ? '' : event?.locationApt,
+      reasonApt: isCreating ? '' : event?.reasonApt,
+      statusApt: 'accepted',
+    },
+    validationSchema: Yup.object({
+      dateApt: Yup.number().required('Date is required'),
+      locationApt: Yup.string().required('Location is required'),
+      reasonApt: Yup.string().required('Reason is required'),
+      user: Yup.object().required('Client is required'),
+      timeApt: Yup.number().required('Time is required'),
+    }),
 
-  const {
-    reset,
-    watch,
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
-
-  const onSubmit = async (data) => {
-    try {
-      const newEvent = {
-        title: data.title,
-        description: data.description,
-        textColor: data.textColor,
-        allDay: data.allDay,
-        start: data.start,
-        end: data.end,
-      };
-      if (event.id) {
-        dispatch(updateEvent(event.id, newEvent));
-        enqueueSnackbar('Update success!');
-      } else {
-        enqueueSnackbar('Create success!');
-        dispatch(createEvent(newEvent));
+    onSubmit: async (formData) => {
+      try {
+        if (event.id) {
+          dispatch(
+            updateAppointmentFromCalendar(event.id, {
+              ...formData,
+              dateApt: DateFix(formData.dateApt),
+              nutritionist: currentUser,
+            })
+          );
+          enqueueSnackbar('Your appointment has been successfully updated!', {
+            autoHideDuration: 3000,
+            variant: 'warning',
+          });
+        } else {
+          enqueueSnackbar('Your appointment has been successfully created!', {
+            autoHideDuration: 3000,
+            variant: 'success',
+          });
+          dispatch(
+            createAppointmentFromCalendar({
+              ...formData,
+              dateApt: DateFix(formData.dateApt),
+              nutritionist: currentUser,
+            })
+          );
+        }
+        formik.handleReset();
+        onCancel();
+      } catch (err) {
+        // toast.error(err.response.data.message);
+        enqueueSnackbar(err.response.data.message, { autoHideDuration: 3000, variant: 'error' });
       }
-      onCancel();
-      reset();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    },
+  });
 
   const handleDelete = async () => {
     if (!event.id) return;
     try {
       onCancel();
-      dispatch(deleteEvent(event.id));
-      enqueueSnackbar('Delete success!');
+      dispatch(deleteAppointmentFromCalendae(event.id));
+      enqueueSnackbar('Your appointment has been successfully deleted!', { autoHideDuration: 3000, variant: 'info' });
     } catch (error) {
       console.error(error);
     }
   };
 
-  const values = watch();
-
-  const isDateError = isBefore(new Date(values.end), new Date(values.start));
+  useEffect(() => {
+    UserApi.getUserByRole('user').then((r) => {
+      setListofClient(r);
+    });
+  }, []);
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={formik.handleSubmit}>
       <Stack spacing={3} sx={{ p: 3 }}>
-        <RHFTextField name="title" label="Title" />
-
-        <RHFTextField name="description" label="Description" multiline rows={4} />
-
-        <RHFSwitch name="allDay" label="All day" />
-
-        <Controller
-          name="start"
-          control={control}
-          render={({ field }) => (
-            <MobileDateTimePicker
-              {...field}
-              label="Start date"
-              inputFormat="dd/MM/yyyy hh:mm a"
-              renderInput={(params) => <TextField {...params} fullWidth />}
+        <Autocomplete
+          id="client-select-demo"
+          // sx={{ width: 300 }}
+          value={formik.values.user}
+          onChange={(e, v) => formik.setFieldValue('user', v)}
+          options={listofClient}
+          autoHighlight
+          fullWidth
+          getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+          isOptionEqualToValue={(option, value) => option._id === value._id}
+          filterOptions={(options, { inputValue }) => {
+            const filter = inputValue.toLowerCase();
+            return options.filter((option) => {
+              const fullName = `${option.firstName} ${option.lastName}`.toLowerCase();
+              const filterValue = filter.toLowerCase();
+              return fullName.indexOf(filterValue) !== -1;
+            });
+          }}
+          noOptionsText={'No client found , Please try to search again !!'}
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              <img
+                loading="lazy"
+                width="20"
+                src={
+                  option.image
+                    ? option.image
+                    : 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg'
+                }
+                srcSet={
+                  option.image
+                    ? option.image
+                    : 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg'
+                }
+                alt=""
+              />
+              {option.firstName} {option.lastName}
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              label="Choose a client"
+              error={formik.errors.nutritionist}
+              helperText={formik.errors.nutritionist}
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+              }}
             />
           )}
         />
 
-        <Controller
-          name="end"
-          control={control}
-          render={({ field }) => (
-            <MobileDateTimePicker
-              {...field}
-              label="End date"
-              inputFormat="dd/MM/yyyy hh:mm a"
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  error={!!isDateError}
-                  helperText={isDateError && 'End date must be later than start date'}
-                />
-              )}
-            />
+        <TextField
+          name="locationApt"
+          label="Location"
+          value={formik.values.locationApt}
+          onChange={formik.handleChange}
+          error={formik.errors.locationApt}
+          helperText={formik.errors.locationApt}
+        />
+        <DatePicker
+          label="Date"
+          value={formik.values.dateApt}
+          onChange={(date) => formik.setFieldValue('dateApt', Date.parse(date))}
+          renderInput={(params) => (
+            <TextField {...params} fullWidth error={formik.errors.dateApt} helperText={formik.errors.dateApt} />
+          )}
+        />
+        <TimePicker
+          label="Time"
+          value={formik.values.timeApt}
+          onChange={(time) => formik.setFieldValue('timeApt', Date.parse(time))}
+          renderInput={(params) => (
+            <TextField {...params} fullWidth error={formik.errors.timeApt} helperText={formik.errors.timeApt} />
           )}
         />
 
-        <Controller
-          name="textColor"
-          control={control}
-          render={({ field }) => (
-            <ColorSinglePicker value={field.value} onChange={field.onChange} colors={COLOR_OPTIONS} />
-          )}
-        />
+        <div>
+          <LabelStyle>Reason</LabelStyle>
+          <Editor
+            simple
+            id={'reason'}
+            value={formik.values.reasonApt}
+            onChange={(reason) => formik.setFieldValue('reasonApt', reason)}
+            error={formik.errors.reasonApt}
+            helperText={
+              <FormHelperText error sx={{ px: 2, textTransform: 'capitalize' }}>
+                {formik.errors.reasonApt}
+              </FormHelperText>
+            }
+          />
+        </div>
       </Stack>
 
       <DialogActions>
         {!isCreating && (
-          <Tooltip title="Delete Event">
+          <Tooltip title="Delete Appointment">
             <IconButton onClick={handleDelete}>
               <Iconify icon="eva:trash-2-outline" width={20} height={20} />
             </IconButton>
@@ -183,10 +253,10 @@ export default function CalendarForm({ event, range, onCancel }) {
           Cancel
         </Button>
 
-        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-          Add
+        <LoadingButton type="submit" color={isCreating ? 'success' : 'warning'} variant="contained" loading={isLoading}>
+          {isCreating ? 'Add' : 'Update'}
         </LoadingButton>
       </DialogActions>
-    </FormProvider>
+    </form>
   );
 }

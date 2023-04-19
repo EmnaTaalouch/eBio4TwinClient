@@ -31,7 +31,6 @@ export default function ScheduleDialog({ row, handleCloseMenuItem }) {
 
   const handleClose = () => {
     setOpen(false);
-    handleCloseMenuItem();
   };
   console.log(row);
 
@@ -48,16 +47,14 @@ export default function ScheduleDialog({ row, handleCloseMenuItem }) {
       try {
         const result = await AppointmentApi.updateAppointment(row._id, { ...row, ...formData });
         // toast.success('Your appointment has been successfully updated');
-        dispatch(updateAppointmentFromList(result));
-        // window.location.reload();
-        handleClose();
+        dispatch(updateAppointmentFromList({ ...row, ...formData }));
         enqueueSnackbar('Your appointment has been successfully updated', {
           autoHideDuration: 3000,
           variant: 'warning',
         });
       } catch (err) {
         //  toast.error(err.response.data.message);
-        enqueueSnackbar(err, { autoHideDuration: 3000, variant: 'error' });
+        enqueueSnackbar(err.response.data.message, { autoHideDuration: 3000, variant: 'error' });
       }
     },
   });
@@ -96,7 +93,14 @@ export default function ScheduleDialog({ row, handleCloseMenuItem }) {
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleCloseMenuItem();
+              }}
+            >
+              Cancel
+            </Button>
             <Button type="submit" sx={{ color: 'warning.main' }}>
               Schedule
             </Button>

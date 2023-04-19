@@ -36,6 +36,10 @@ export const AppointmentApi = {
     const { data } = await api.get(`/nutritionist?nutritionist=${nutId}`);
     return data;
   },
+  async getAppointmentsByNutritionistCalendar(nutId) {
+    const { data } = await api.get(`/nutritionistCalendar?nutritionist=${nutId}`);
+    return data;
+  },
   async getAppointmentsByClient(clientId) {
     const { data } = await api.get(`/client?client=${clientId}`);
     return data;

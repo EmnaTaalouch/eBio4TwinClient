@@ -38,12 +38,18 @@ export const PATH_DASHBOARD = {
     book: path(ROOTS_DASHBOARD, '/appointment/book'),
     bookFromDoctor: (id) => path(ROOTS_DASHBOARD, `/appointment/book/${id}/doctorList`),
     doctors: path(ROOTS_DASHBOARD, '/appointment/doctors'),
-    calendarN: path(ROOTS_DASHBOARD,'/appointment/calendarN')
+    calendarN: path(ROOTS_DASHBOARD, '/appointment/calendarN'),
   },
-  cxpForm:{
-  list:path(ROOTS_DASHBOARD, '/cxpForm/list'),
-  addCxpForm:path(ROOTS_DASHBOARD, '/cxpForm/addCxpForm/:id'),
-  updateCxpForm:path(ROOTS_DASHBOARD, '/cxpForm/updateCxpForm/:id')
+  question: {
+    forum: path(ROOTS_DASHBOARD, '/question/forum'),
+    forumN: path(ROOTS_DASHBOARD, '/question/forumN'),
+    new: path(ROOTS_DASHBOARD, '/question/new'),
+    detail: (id) => path(ROOTS_DASHBOARD, `/question/detail/${id}`),
+  },
+  cxpForm: {
+    list: path(ROOTS_DASHBOARD, '/cxpForm/list'),
+    addCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/addCxpForm/:id'),
+    updateCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/updateCxpForm/:id'),
   },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),

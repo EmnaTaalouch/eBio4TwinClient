@@ -10,7 +10,7 @@ import { Link, Stack, Alert, IconButton, InputAdornment, TextField, Checkbox } f
 import { LoadingButton } from '@mui/lab';
 // routes
 import axios from 'axios';
-import { PATH_AUTH } from '../../../routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -49,7 +49,7 @@ export default function LoginForm() {
       localStorage.setItem('token', JSON.stringify(result.data.token));
       localStorage.setItem('email', JSON.stringify(result.data.email));
       location.reload();
-      navigate('/dashboard/app', { replace: true });
+      navigate(PATH_DASHBOARD.general.app);
     } catch (err) {
       console.log(err);
     }
