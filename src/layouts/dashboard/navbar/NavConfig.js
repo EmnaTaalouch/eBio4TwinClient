@@ -122,6 +122,8 @@ const navConfig = [
   },
 ];
 
+// USER CONFIG
+
 export const userNavConfig = [
   {
     subheader: 'user management',
@@ -141,16 +143,17 @@ export const userNavConfig = [
         icon: ICONS.cart,
         children: [
           { title: 'Home', path: PATH_DASHBOARD.eCommerce.shop },
-          { title: 'Questions Forum', path: PATH_DASHBOARD.eCommerce.demoView },
-          { title: 'Appointments', path: PATH_DASHBOARD.eCommerce.list },
+          { title: 'Questions Forum', path: PATH_DASHBOARD.question.forum },
+          { title: 'Appointments', path: PATH_DASHBOARD.appointment.list },
           { title: 'Private Messages', path: PATH_DASHBOARD.chat.root },
-          { title: 'Doctors', path: PATH_DASHBOARD.eCommerce.demoEdit },
+          { title: 'Doctors', path: PATH_DASHBOARD.appointment.doctors },
         ],
       },
     ],
   },
 ];
 
+// NUTRITIONIST CONFIG
 export const nutritionistNavConfig = [
   {
     subheader: '',
@@ -158,7 +161,7 @@ export const nutritionistNavConfig = [
       // Recommandation
       {
         title: 'Appointments',
-        path: PATH_DASHBOARD.user.root,
+        path: PATH_DASHBOARD.appointment.listN,
         icon: ICONS.user,
         // children: [{ title: 'rrrrr', path: PATH_DASHBOARD.user.profile }],
       },
@@ -166,12 +169,12 @@ export const nutritionistNavConfig = [
       // Nutrition
       {
         title: 'Caldender',
-        path: PATH_DASHBOARD.eCommerce.root,
-        icon: ICONS.cart,
+        path: PATH_DASHBOARD.appointment.calendarN,
+        icon: ICONS.calendar,
       },
       {
         title: 'Question Forum',
-        path: PATH_DASHBOARD.eCommerce.root,
+        path: PATH_DASHBOARD.question.forumN,
         icon: ICONS.cart,
       },
       {

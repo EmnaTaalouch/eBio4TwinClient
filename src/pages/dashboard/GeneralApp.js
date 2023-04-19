@@ -2,6 +2,7 @@
 import { useTheme } from '@mui/material/styles';
 import { Container, Grid, Stack } from '@mui/material';
 // hooks
+import { useSelector } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
 // components
@@ -25,13 +26,14 @@ import {
 export default function GeneralApp() {
   const theme = useTheme();
   const { themeStretch } = useSettings();
+  const { currentUser } = useSelector((state)=>state.user);
 
   return (
     <Page title="General: App">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <AppWelcome displayName={'user?.displayName'} />
+            <AppWelcome displayName={currentUser?.firstName + currentUser?.lastName} />
           </Grid>
 
           <Grid item xs={12} md={4}>

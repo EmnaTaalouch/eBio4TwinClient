@@ -32,6 +32,20 @@ export const PATH_PAGE = {
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
+  appointment: {
+    list: path(ROOTS_DASHBOARD, '/appointment/list'),
+    listN: path(ROOTS_DASHBOARD, '/appointment/listN'),
+    book: path(ROOTS_DASHBOARD, '/appointment/book'),
+    bookFromDoctor: (id) => path(ROOTS_DASHBOARD, `/appointment/book/${id}/doctorList`),
+    doctors: path(ROOTS_DASHBOARD, '/appointment/doctors'),
+    calendarN: path(ROOTS_DASHBOARD, '/appointment/calendarN'),
+  },
+  question: {
+    forum: path(ROOTS_DASHBOARD, '/question/forum'),
+    forumN: path(ROOTS_DASHBOARD, '/question/forumN'),
+    new: path(ROOTS_DASHBOARD, '/question/new'),
+    detail: (id) => path(ROOTS_DASHBOARD, `/question/detail/${id}`),
+  },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),

@@ -1,43 +1,44 @@
 import FullCalendar from '@fullcalendar/react'; // => request placed at the top
 import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import timelinePlugin from '@fullcalendar/timeline';
 import interactionPlugin from '@fullcalendar/interaction';
 //
 import { useState, useRef, useEffect } from 'react';
 // @mui
 import { Card, Button, Container, DialogTitle } from '@mui/material';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { getEvents, openModal, closeModal, updateEvent, selectEvent, selectRange } from '../../redux/slices/calendar';
+
+import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from '../../../redux/store';
+import { getAppointmentsFromCalendar, openModal, closeModal, updateAppointmentFromCalendar, selectEvent, selectRange } from '../../../redux/slices/appointmentSlice';
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
-import useSettings from '../../hooks/useSettings';
-import useResponsive from '../../hooks/useResponsive';
+import useSettings from '../../../hooks/useSettings';
+import useResponsive from '../../../hooks/useResponsive';
 // components
-import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
-import { DialogAnimate } from '../../components/animate';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import Page from '../../../components/Page';
+import Iconify from '../../../components/Iconify';
+import { DialogAnimate } from '../../../components/animate';
+import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
-import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
+import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../../sections/@dashboard/appointment/calendar';
 
 // ----------------------------------------------------------------------
 
 const selectedEventSelector = (state) => {
-  const { events, selectedEventId } = state.calendar;
+  const { events, selectedEventId } = state.appointment;
   if (selectedEventId) {
     return events.find((_event) => _event.id === selectedEventId);
   }
   return null;
 };
 
-export default function Calendar() {
+export default function CalendarNutritionist() {
   const { themeStretch } = useSettings();
 
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const isDesktop = useResponsive('up', 'sm');
 
@@ -49,12 +50,15 @@ export default function Calendar() {
 
   const selectedEvent = useSelector(selectedEventSelector);
 
-  const { events, isOpenModal, selectedRange } = useSelector((state) => state.calendar);
+  const {currentUser,step} = useSelector((state)=>state.user);
+
+  const { events, isOpenModal, selectedRange } = useSelector((state) => state.appointment);
 
   useEffect(() => {
-    dispatch(getEvents());
-  }, [dispatch]);
-console.log(events);
+    if (step) {
+    dispatch(getAppointmentsFromCalendar(currentUser?._id));
+    }
+  }, [dispatch,currentUser]);
 
   useEffect(() => {
     const calendarEl = calendarRef.current;
@@ -115,29 +119,24 @@ console.log(events);
     dispatch(selectEvent(arg.event.id));
   };
 
-  const handleResizeEvent = async ({ event }) => {
-    try {
-      dispatch(
-        updateEvent(event.id, {
-          allDay: event.allDay,
-          start: event.start,
-          end: event.end,
-        })
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleDropEvent = async ({ event }) => {
     try {
       dispatch(
-        updateEvent(event.id, {
+        updateAppointmentFromCalendar(event.id, {
           allDay: event.allDay,
           start: event.start,
           end: event.end,
+          locationApt:event._def.extendedProps.locationApt,
+          reasonApt:event._def.extendedProps.reasonApt,
+          statusApt:event._def.extendedProps.statusApt,
+          dateApt:event.start,
+          timeApt:event._def.extendedProps.timeApt,
+          client:event._def.extendedProps.client,
+          nutritionist:event._def.extendedProps.nutritionist
         })
       );
+      enqueueSnackbar('Your appointment has been successfully updated!', { autoHideDuration: 3000,variant:'warning' });
     } catch (error) {
       console.error(error);
     }
@@ -157,14 +156,13 @@ console.log(events);
         <HeaderBreadcrumbs
           heading="Calendar"
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Calendar' }]}
-          moreLink="https://fullcalendar.io/docs/react"
           action={
             <Button
               variant="contained"
               startIcon={<Iconify icon={'eva:plus-fill'} width={20} height={20} />}
               onClick={handleAddEvent}
             >
-              New Event
+              New Appointment
             </Button>
           }
         />
@@ -193,19 +191,19 @@ console.log(events);
               eventDisplay="block"
               headerToolbar={false}
               allDayMaintainDuration
-              eventResizableFromStart
+             // eventResizableFromStart
               select={handleSelectRange}
               eventDrop={handleDropEvent}
               eventClick={handleSelectEvent}
-              eventResize={handleResizeEvent}
+             // eventResize={handleResizeEvent}
               height={isDesktop ? 720 : 'auto'}
-              plugins={[listPlugin, dayGridPlugin, timelinePlugin, timeGridPlugin, interactionPlugin]}
+              plugins={[listPlugin, dayGridPlugin, interactionPlugin]}
             />
           </CalendarStyle>
         </Card>
 
         <DialogAnimate open={isOpenModal} onClose={handleCloseModal}>
-          <DialogTitle>{selectedEvent ? 'Edit Event' : 'Add Event'}</DialogTitle>
+          <DialogTitle>{selectedEvent ? 'Edit Appointment' : 'New Appointment'}</DialogTitle>
 
           <CalendarForm event={selectedEvent || {}} range={selectedRange} onCancel={handleCloseModal} />
         </DialogAnimate>

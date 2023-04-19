@@ -96,6 +96,28 @@ export default function Router() {
           ],
         },
         {
+          path: 'appointment',
+          children: [
+            { element: <Navigate to="/appointment/list" replace />, index: true },
+            { path: 'list', element: <AppointmentList /> },
+            { path: 'listN', element: <AppointmentNutritionistList /> },
+            { path: 'book', element: <AppointmentCreate /> },
+            { path: 'book/:id/doctorList', element: <AppointmentCreate /> },
+            { path: 'doctors', element: <DoctorList /> },
+            { path: 'calendarN', element: <CalendarNutritionist /> },
+          ],
+        },
+        {
+          path: 'question',
+          children: [
+            { element: <Navigate to="/question/forum" replace />, index: true },
+            { path: 'forum', element: <QuestionForum /> },
+            { path: 'forumN', element: <QuestionNutritionistForum /> },
+            { path: 'new', element: <QuestionNew /> },
+            { path: 'detail/:id', element: <QuestionDetails /> },
+          ],
+        },
+        {
           path: 'invoice',
           children: [
             { element: <Navigate to="/dashboard/invoice/list" replace />, index: true },
@@ -197,6 +219,21 @@ const InvoiceEdit = Loadable(lazy(() => import('../pages/dashboard/InvoiceEdit')
 const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
 const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
+
+// QUESTION
+const QuestionForum = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionForum')));
+const QuestionNutritionistForum = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionNutritionistForum')));
+const QuestionNew = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionNew')));
+const QuestionDetails = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionDetails')));
+
+// APPOINTMENT
+const AppointmentList = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentList')));
+const AppointmentNutritionistList = Loadable(
+  lazy(() => import('../pages/dashboard/Appointment/AppointmentNutritionistList'))
+);
+const AppointmentCreate = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentCreate')));
+const DoctorList = Loadable(lazy(() => import('../pages/dashboard/Appointment/DoctorList')));
+const CalendarNutritionist = Loadable(lazy(() => import('../pages/dashboard/Appointment/CalendarNutritionist')));
 
 // USER
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
