@@ -10,7 +10,14 @@ import { Card, Button, Container, DialogTitle } from '@mui/material';
 
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from '../../../redux/store';
-import { getAppointmentsFromCalendar, openModal, closeModal, updateAppointmentFromCalendar, selectEvent, selectRange } from '../../../redux/slices/appointmentSlice';
+import {
+  getAppointmentsFromCalendar,
+  openModal,
+  closeModal,
+  updateAppointmentFromCalendar,
+  selectEvent,
+  selectRange,
+} from '../../../redux/slices/appointmentSlice';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
@@ -50,15 +57,15 @@ export default function CalendarNutritionist() {
 
   const selectedEvent = useSelector(selectedEventSelector);
 
-  const {currentUser,step} = useSelector((state)=>state.user);
+  const { currentUser, step } = useSelector((state) => state.user);
 
   const { events, isOpenModal, selectedRange } = useSelector((state) => state.appointment);
 
   useEffect(() => {
     if (step) {
-    dispatch(getAppointmentsFromCalendar(currentUser?._id));
+      dispatch(getAppointmentsFromCalendar(currentUser?._id));
     }
-  }, [dispatch,currentUser]);
+  }, [dispatch, currentUser]);
 
   useEffect(() => {
     const calendarEl = calendarRef.current;
@@ -119,7 +126,6 @@ export default function CalendarNutritionist() {
     dispatch(selectEvent(arg.event.id));
   };
 
-
   const handleDropEvent = async ({ event }) => {
     try {
       dispatch(
@@ -127,16 +133,19 @@ export default function CalendarNutritionist() {
           allDay: event.allDay,
           start: event.start,
           end: event.end,
-          locationApt:event._def.extendedProps.locationApt,
-          reasonApt:event._def.extendedProps.reasonApt,
-          statusApt:event._def.extendedProps.statusApt,
-          dateApt:event.start,
-          timeApt:event._def.extendedProps.timeApt,
-          client:event._def.extendedProps.client,
-          nutritionist:event._def.extendedProps.nutritionist
+          locationApt: event._def.extendedProps.locationApt,
+          reasonApt: event._def.extendedProps.reasonApt,
+          statusApt: event._def.extendedProps.statusApt,
+          dateApt: event.start,
+          timeApt: event._def.extendedProps.timeApt,
+          client: event._def.extendedProps.client,
+          nutritionist: event._def.extendedProps.nutritionist,
         })
       );
-      enqueueSnackbar('Your appointment has been successfully updated!', { autoHideDuration: 3000,variant:'warning' });
+      enqueueSnackbar('Your appointment has been successfully updated!', {
+        autoHideDuration: 3000,
+        variant: 'warning',
+      });
     } catch (error) {
       console.error(error);
     }
@@ -191,11 +200,11 @@ export default function CalendarNutritionist() {
               eventDisplay="block"
               headerToolbar={false}
               allDayMaintainDuration
-             // eventResizableFromStart
+              // eventResizableFromStart
               select={handleSelectRange}
               eventDrop={handleDropEvent}
               eventClick={handleSelectEvent}
-             // eventResize={handleResizeEvent}
+              // eventResize={handleResizeEvent}
               height={isDesktop ? 720 : 'auto'}
               plugins={[listPlugin, dayGridPlugin, interactionPlugin]}
             />

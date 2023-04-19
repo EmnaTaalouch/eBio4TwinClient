@@ -22,7 +22,15 @@ AppointmentTableRow.propTypes = {
   refRole: PropTypes.string,
 };
 
-export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRow, onSelectRow, onCancelRow, refRole }) {
+export default function AppointmentTableRow({
+  keyRow,
+  row,
+  selected,
+  onScheduleRow,
+  onSelectRow,
+  onCancelRow,
+  refRole,
+}) {
   const theme = useTheme();
 
   const [openMenu, setOpenMenuActions] = useState(null);
@@ -54,7 +62,7 @@ export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRo
               sx={{ mr: 2 }}
             />
             <Typography variant="subtitle2" noWrap>
-              {`${row.client.firstName } ${ row.client.lastName}`}
+              {`${row.client.firstName} ${row.client.lastName}`}
             </Typography>
           </>
         ) : (
@@ -69,7 +77,7 @@ export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRo
               sx={{ mr: 2 }}
             />
             <Typography variant="subtitle2" noWrap>
-              {`${row.nutritionist.firstName } ${ row.nutritionist.lastName}`}
+              {`${row.nutritionist.firstName} ${row.nutritionist.lastName}`}
             </Typography>
           </>
         )}
@@ -78,7 +86,7 @@ export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRo
       <TableCell align="left">{format(new Date(row.dateApt), 'yyyy/MM/dd')}</TableCell>
 
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
-        {format(new Date(parseInt(row.timeApt,10)), 'h:mm a')}
+        {format(new Date(parseInt(row.timeApt, 10)), 'h:mm a')}
       </TableCell>
       <TableCell align="left" sx={{ textTransform: 'capitalize' }}>
         {row.locationApt}
@@ -96,22 +104,22 @@ export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRo
         </TableCell>
       )}
 
-      {row.statusApt ==="pending" && refRole === 'clientRole' ? (
+      {row.statusApt === 'pending' && refRole === 'clientRole' ? (
         <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-            <MenuItem
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                <MenuItem
                   onClick={() => {
                     // onScheduleRow();
                     // handleCloseMenu();
                   }}
                   sx={{ color: 'secondary.main' }}
                 >
-                  <ScheduleDialog row={row} handleCloseMenuItem={handleCloseMenu}  />
+                  <ScheduleDialog row={row} handleCloseMenuItem={handleCloseMenu} />
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
@@ -123,18 +131,22 @@ export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRo
                   <Iconify icon={'eva:close-circle-outline'} />
                   Cancel
                 </MenuItem>
-                </>    
-          }
-      /></TableCell>) : (<TableCell align="right"> </TableCell>)}
+              </>
+            }
+          />
+        </TableCell>
+      ) : (
+        <TableCell align="right"> </TableCell>
+      )}
       {refRole === 'nutritionistRole' && (
         <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-            <MenuItem
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                <MenuItem
                   onClick={() => {
                     onScheduleRow();
                     handleCloseMenu();
@@ -154,11 +166,11 @@ export default function AppointmentTableRow({ keyRow,row, selected, onScheduleRo
                   <Iconify icon={'eva:slash-outline'} />
                   Decline
                 </MenuItem>
-                </>  
-          }
-      /></TableCell>)}
-
-  
+              </>
+            }
+          />
+        </TableCell>
+      )}
     </TableRow>
   );
 }

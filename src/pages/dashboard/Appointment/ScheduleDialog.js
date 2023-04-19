@@ -20,7 +20,7 @@ import Iconify from '../../../components/Iconify';
 import { AppointmentApi } from '../../../actions/appointmentAction';
 import { updateAppointmentFromList } from '../../../redux/slices/appointmentSlice';
 
-export default function ScheduleDialog({ row,handleCloseMenuItem }) {
+export default function ScheduleDialog({ row, handleCloseMenuItem }) {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export default function ScheduleDialog({ row,handleCloseMenuItem }) {
   const formik = useFormik({
     initialValues: {
       dateApt: Date.parse(row.dateApt),
-      timeApt: parseInt(row.timeApt,10),
+      timeApt: parseInt(row.timeApt, 10),
     },
     validationSchema: Yup.object({
       dateApt: Yup.number().required('Date is required'),
@@ -45,14 +45,16 @@ export default function ScheduleDialog({ row,handleCloseMenuItem }) {
     }),
     onSubmit: async (formData) => {
       try {
-          const result = await AppointmentApi.updateAppointment(row._id,{...row,...formData});
-       // toast.success('Your appointment has been successfully updated');
-       dispatch(updateAppointmentFromList({...row,...formData}))
-        enqueueSnackbar('Your appointment has been successfully updated', { autoHideDuration: 3000,variant:'warning' });
+        const result = await AppointmentApi.updateAppointment(row._id, { ...row, ...formData });
+        // toast.success('Your appointment has been successfully updated');
+        dispatch(updateAppointmentFromList({ ...row, ...formData }));
+        enqueueSnackbar('Your appointment has been successfully updated', {
+          autoHideDuration: 3000,
+          variant: 'warning',
+        });
       } catch (err) {
-      //  toast.error(err.response.data.message);
-        enqueueSnackbar(err.response.data.message, { autoHideDuration: 3000,variant:'error' });
-
+        //  toast.error(err.response.data.message);
+        enqueueSnackbar(err.response.data.message, { autoHideDuration: 3000, variant: 'error' });
       }
     },
   });
@@ -60,10 +62,10 @@ export default function ScheduleDialog({ row,handleCloseMenuItem }) {
   return (
     <div>
       <div onClick={handleClickOpen}>
-      <Stack direction={{ xs: 'column', sm: 'row' }} >
-        <Iconify icon={'eva:clock-outline'} />
-       <div>Schedule</div> 
-       </Stack>
+        <Stack direction={{ xs: 'column', sm: 'row' }}>
+          <Iconify icon={'eva:clock-outline'} />
+          <div>Schedule</div>
+        </Stack>
       </div>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={formik.handleSubmit}>
@@ -91,8 +93,17 @@ export default function ScheduleDialog({ row,handleCloseMenuItem }) {
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={()=>{handleClose();handleCloseMenuItem();}}>Cancel</Button>
-            <Button type="submit" sx={{ color: 'warning.main' }}>Schedule</Button>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleCloseMenuItem();
+              }}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" sx={{ color: 'warning.main' }}>
+              Schedule
+            </Button>
           </DialogActions>
         </form>
       </Dialog>

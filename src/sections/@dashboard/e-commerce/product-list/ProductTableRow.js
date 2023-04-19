@@ -1,5 +1,7 @@
+/* eslint-disable */
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -12,6 +14,8 @@ import Label from '../../../../components/Label';
 import Image from '../../../../components/Image';
 import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
+import { Link, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 //
 
 // ----------------------------------------------------------------------
@@ -27,7 +31,7 @@ ProductTableRow.propTypes = {
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, cover, createdAt, inventoryType, price } = row;
+  const { _id, name, cover, date, quantity, price } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -35,10 +39,23 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
     setOpenMenuActions(event.currentTarget);
   };
 
+  const navigate = useNavigate();
+
+  const edit = () => {
+    navigate(`/dashboard/e-commerce/product/edit/${_id}`);
+  }
+
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
   };
-
+  const deleteProduct = async() => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/product/delete/${_id}`);
+      window.location.reload();
+    } catch(e) {
+      console.log(e);
+    }
+  }
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
@@ -52,18 +69,12 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
         </Typography>
       </TableCell>
 
-      <TableCell>{fDate(createdAt)}</TableCell>
+      <TableCell>{fDate(date)}</TableCell>
 
       <TableCell align="center">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={
-            (inventoryType === 'out_of_stock' && 'error') || (inventoryType === 'low_stock' && 'warning') || 'success'
-          }
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {inventoryType ? sentenceCase(inventoryType) : ''}
-        </Label>
+      <Typography variant="subtitle2" noWrap>
+          {quantity}
+        </Typography>
       </TableCell>
 
       <TableCell align="right">{fCurrency(price)}</TableCell>
@@ -77,8 +88,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
             <>
               <MenuItem
                 onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
+                  deleteProduct();
                 }}
                 sx={{ color: 'error.main' }}
               >
@@ -87,12 +97,13 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
+                  edit();
+                  
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />
                 Edit
+                
               </MenuItem>
             </>
           }

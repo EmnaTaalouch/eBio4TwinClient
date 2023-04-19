@@ -87,7 +87,7 @@ export default function AppointmentList() {
 
   const navigate = useNavigate();
 
-    const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   const [filterName, setFilterName] = useState('');
 
@@ -98,12 +98,10 @@ export default function AppointmentList() {
   useEffect(() => {
     if (step) {
       dispatch(fetchAppointmentByClient(currentUser?._id));
-     
     }
   }, [dispatch, currentUser]);
 
   console.log(appointments);
-  
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
@@ -126,11 +124,9 @@ export default function AppointmentList() {
     // navigate(PATH_DASHBOARD.user.edit(paramCase(id)));
     await AppointmentApi.deleteAppointment(row._id);
     dispatch(removeAppointmentFromList(row));
-    enqueueSnackbar('Appointment have been cancelled', { autoHideDuration: 3000,variant:'info' });
-   // toast.success('Appointment have been cancelled');
+    enqueueSnackbar('Appointment have been cancelled', { autoHideDuration: 3000, variant: 'info' });
+    // toast.success('Appointment have been cancelled');
   };
-
-
 
   useEffect(() => {
     try {
@@ -288,14 +284,11 @@ function applySortFilter({ appointments, comparator, filterName, filterStatus })
   let filteredAppointments = stabilizedThis?.map((el) => el[0]);
 
   if (filterName) {
-    filteredAppointments = filteredAppointments?.filter(
-      (item) => {
-        const fullName = `${item.nutritionist.firstName} ${item.nutritionist.lastName}`.toLowerCase();
-        const filterValue = filterName.toLowerCase();
-        return fullName.indexOf(filterValue) !== -1;
-      }
-    );
-    
+    filteredAppointments = filteredAppointments?.filter((item) => {
+      const fullName = `${item.nutritionist.firstName} ${item.nutritionist.lastName}`.toLowerCase();
+      const filterValue = filterName.toLowerCase();
+      return fullName.indexOf(filterValue) !== -1;
+    });
   }
 
   if (filterStatus !== 'all') {

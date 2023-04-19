@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import sum from 'lodash/sum';
 import uniqBy from 'lodash/uniqBy';
 // utils
-import axios from '../../utils/axios';
+import axios from 'axios';
 //
 import { dispatch } from '../store';
+import { UserApi } from '../../actions/userAction';
+
 
 // ----------------------------------------------------------------------
 
@@ -213,12 +215,19 @@ export const {
 export function getProducts() {
   return async () => {
     dispatch(slice.actions.startLoading());
+    const token = localStorage.getItem('token');
+    const tokenss = JSON.parse(token);
+    const { data } = await axios.get(`http://localhost:5000/user/profile/${tokenss}`);
+    console.log(data);
+    const currentUser = data._id;
     try {
-      const response = await axios.get('/api/products');
-      dispatch(slice.actions.getProductsSuccess(response.data.products));
+      const response = await axios.get(`http://localhost:5000/product/farmer?farmer=${currentUser}`);
+      console.log(response.data,"farmers");
+      dispatch(slice.actions.getProductsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
+    
   };
 }
 

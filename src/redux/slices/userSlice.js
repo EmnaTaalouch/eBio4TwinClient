@@ -6,6 +6,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserApi } from '../../actions/userAction';
 
 export const userRegister = createAsyncThunk('user/register', async (user) => await UserApi.register(user));
+export const fetchUsersList = createAsyncThunk('user/listUsers', async () => {
+  const result = await UserApi.getUsers();
+  return result;
+});
+
 
 const initialState = {
   currentUser: null,
@@ -39,7 +44,12 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(userRegister.pending, (state) => (state.loading = true))
-      .addCase(userRegister.fulfilled, (state) => (state.loading = false));
+      .addCase(userRegister.fulfilled, (state) => (state.loading = false))
+      .addCase(fetchUsersList.pending, (state) => (state.loading = true))
+      .addCase(fetchUsersList.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.loading = false;
+      });
   },
 });
 

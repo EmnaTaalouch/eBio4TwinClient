@@ -19,5 +19,12 @@ export const UserApi = {
   async editUserProfile(userId, body) {
     const { data } = await api.put(`/${userId}`, body);
     return data;
+  }, async getUsers() {
+    const { data } = await api.get('/listUsers');
+    return data;
+  },async searchUsers(body) {
+
+    const { data } = await api.get('/userSearch', body)
+    return data;
   },
 };

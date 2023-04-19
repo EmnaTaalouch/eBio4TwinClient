@@ -44,82 +44,85 @@ const appointmentSlice = createSlice(
 
       updateAppointmentFromList: (state, action) => {
         state.appointments = state.appointments.map((item) => {
-          item._id === action.payload._id ? action.payload : item;
+          if (item._id === action.payload._id) {
+            return action.payload;
+          }
+          return item;
         });
       },
       removeAppointmentFromList: (state, action) => {
         state.appointments = state.appointments.filter((item) => item._id !== action.payload._id);
       },
-       // START LOADING
-    startLoading(state) {
-      state.isLoading = true;
-    },
+      // START LOADING
+      startLoading(state) {
+        state.isLoading = true;
+      },
 
-    // HAS ERROR
-    hasError(state, action) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+      // HAS ERROR
+      hasError(state, action) {
+        state.isLoading = false;
+        state.error = action.payload;
+      },
 
-    // GET EVENTS
-    getEventsSuccess(state, action) {
-      state.isLoading = false;
-      state.events = action.payload;
-    },
+      // GET EVENTS
+      getEventsSuccess(state, action) {
+        state.isLoading = false;
+        state.events = action.payload;
+      },
 
-    // CREATE EVENT
-    createEventSuccess(state, action) {
-      const newEvent = action.payload;
-      state.isLoading = false;
-      state.events = [...state.events, newEvent];
-    },
+      // CREATE EVENT
+      createEventSuccess(state, action) {
+        const newEvent = action.payload;
+        state.isLoading = false;
+        state.events = [...state.events, newEvent];
+      },
 
-    // UPDATE EVENT
-    updateEventSuccess(state, action) {
-      const event = action.payload;
-      const updateEvent = state.events.map((_event) => {
-        if (_event.id === event.id) {
-          return event;
-        }
-        return _event;
-      });
-      state.isLoading = false;
-      state.events = updateEvent;
-    },
+      // UPDATE EVENT
+      updateEventSuccess(state, action) {
+        const event = action.payload;
+        const updateEvent = state.events.map((_event) => {
+          if (_event.id === event.id) {
+            return event;
+          }
+          return _event;
+        });
+        state.isLoading = false;
+        state.events = updateEvent;
+      },
 
-    // DELETE EVENT
-    deleteEventSuccess(state, action) {
-      const { AppointmentId } = action.payload;
-      const deleteEvent = state.events.filter((event) => event.id !== AppointmentId);
-      state.events = deleteEvent;
-      state.isLoading = false;
-    },
+      // DELETE EVENT
+      deleteEventSuccess(state, action) {
+        const { AppointmentId } = action.payload;
+        const deleteEvent = state.events.filter((event) => event.id !== AppointmentId);
+        state.events = deleteEvent;
+        state.isLoading = false;
+      },
 
-    // SELECT EVENT
-    selectEvent(state, action) {
-      const eventId = action.payload;
-      state.isOpenModal = true;
-      state.selectedEventId = eventId;
-    },
+      // SELECT EVENT
+      selectEvent(state, action) {
+        const eventId = action.payload;
+        state.isOpenModal = true;
+        state.selectedEventId = eventId;
+      },
 
-    // SELECT RANGE
-    selectRange(state, action) {
-      const { start, end } = action.payload;
-      state.isOpenModal = true;
-      state.selectedRange = { start, end };
-    },
+      // SELECT RANGE
+      selectRange(state, action) {
+        const { start, end } = action.payload;
+        state.isOpenModal = true;
+        state.selectedRange = { start, end };
+      },
 
-    // OPEN MODAL
-    openModal(state) {
-      state.isOpenModal = true;
-    },
+      // OPEN MODAL
+      openModal(state) {
+        state.isOpenModal = true;
+      },
 
-    // CLOSE MODAL
-    closeModal(state) {
-      state.isOpenModal = false;
-      state.selectedEventId = null;
-      state.selectedRange = null;
-    },
+      // CLOSE MODAL
+      closeModal(state) {
+        state.isOpenModal = false;
+        state.selectedEventId = null;
+        state.selectedRange = null;
+      },
     },
     extraReducers: (builder) => {
       builder
@@ -148,7 +151,14 @@ const appointmentSlice = createSlice(
   { immer: true }
 );
 
-export const { createAppointmentList, updateAppointmentFromList, removeAppointmentFromList,openModal, closeModal, selectEvent } = appointmentSlice.actions;
+export const {
+  createAppointmentList,
+  updateAppointmentFromList,
+  removeAppointmentFromList,
+  openModal,
+  closeModal,
+  selectEvent,
+} = appointmentSlice.actions;
 export default appointmentSlice.reducer;
 
 // ----------------------------------------------------------------------
@@ -158,7 +168,9 @@ export function getAppointmentsFromCalendar(id) {
     dispatch(appointmentSlice.actions.startLoading());
     try {
       const response = await AppointmentApi.getAppointmentsByNutritionistCalendar(id);
-      dispatch(appointmentSlice.actions.getEventsSuccess(response.map(appointment => convertAppointmentToEvent(appointment))));
+      dispatch(
+        appointmentSlice.actions.getEventsSuccess(response.map((appointment) => convertAppointmentToEvent(appointment)))
+      );
     } catch (error) {
       dispatch(appointmentSlice.actions.hasError(error));
     }
@@ -185,7 +197,7 @@ export function updateAppointmentFromCalendar(AppointmentId, updatedAppointment)
   return async () => {
     dispatch(appointmentSlice.actions.startLoading());
     try {
-      const response = await AppointmentApi.updateAppointment(AppointmentId,updatedAppointment);
+      const response = await AppointmentApi.updateAppointment(AppointmentId, updatedAppointment);
       dispatch(appointmentSlice.actions.updateEventSuccess(convertAppointmentToEvent(response)));
     } catch (error) {
       dispatch(appointmentSlice.actions.hasError(error));
@@ -221,31 +233,32 @@ export function selectRange(start, end) {
 }
 
 function convertAppointmentToEvent(appointment) {
-    const startTime = new Date(`${new Date(appointment.dateApt).toISOString().substr(0, 10)}T${new Date(parseInt(appointment.timeApt,10)).toISOString().substr(11, 5)}:00.000Z`);
-    const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
+  const startTime = new Date(
+    `${new Date(appointment.dateApt).toISOString().substr(0, 10)}T${new Date(parseInt(appointment.timeApt, 10))
+      .toISOString()
+      .substr(11, 5)}:00.000Z`
+  );
+  const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
   return {
     id: appointment._id,
-    title: `${appointment.client.firstName  } ${appointment.client.lastName}`,
+    title: `${appointment.client.firstName} ${appointment.client.lastName}`,
     start: startTime.toISOString(),
     end: endTime.toISOString(),
     allDay: false,
-    locationApt:appointment.locationApt,
-    reasonApt:appointment.reasonApt,
-    statusApt:appointment.statusApt,
-    dateApt:appointment.dateApt,
-    timeApt:appointment.timeApt,
+    locationApt: appointment.locationApt,
+    reasonApt: appointment.reasonApt,
+    statusApt: appointment.statusApt,
+    dateApt: appointment.dateApt,
+    timeApt: appointment.timeApt,
     textColor: convertStatusToColor(appointment.statusApt),
-    client:appointment.client,
-    nutritionist:appointment.nutritionist
+    client: appointment.client,
+    nutritionist: appointment.nutritionist,
   };
 }
 
-function convertStatusToColor(status){
-  if(status==="pending")
-  return '#FFC107'
-  if(status==="accepted")
-  return '#54D62C'
-  if(status==="declined")
-  return '#FF4842'
-  return '#00AB55'
+function convertStatusToColor(status) {
+  if (status === 'pending') return '#FFC107';
+  if (status === 'accepted') return '#54D62C';
+  if (status === 'declined') return '#FF4842';
+  return '#00AB55';
 }

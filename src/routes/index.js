@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
+
 import UserPage from '../sections/@dashboard/admin/UserPage';
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
@@ -79,8 +80,10 @@ export default function Router() {
             { path: 'product/:name', element: <EcommerceProductDetails /> },
             { path: 'list', element: <EcommerceProductList /> },
             { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+            { path: 'product/edit/:id', element: <EcommerceProductEdit /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
+            { path: 'basket', element: <Basket /> },
+            { path: 'order', element: <Order /> },
           ],
         },
         {
@@ -93,6 +96,27 @@ export default function Router() {
             { path: 'new', element: <UserCreate /> },
             { path: ':name/edit', element: <UserCreate /> },
             { path: 'account', element: <UserAccount /> },
+          ],
+        },
+        {
+          path: 'cxpForm',
+          children: [
+            { element: <Navigate to="/cxpForm/list" replace />, index: true },
+            { path: 'list', element: <CxpForm /> },
+            { path: 'addCxpForm/:id', element: <AddCxpForm /> },
+            { path: 'updateCxpForm/:id', element: <UpdateCxpForm /> },
+          ],
+        },
+        {
+          path: 'appointment',
+          children: [
+            { element: <Navigate to="/appointment/list" replace />, index: true },
+            { path: 'list', element: <AppointmentList /> },
+            { path: 'listN', element: <AppointmentNutritionistList /> },
+            { path: 'book', element: <AppointmentCreate /> },
+            { path: 'book/:id/doctorList', element: <AppointmentCreate /> },
+            { path: 'doctors', element: <DoctorList /> },
+            { path: 'calendarN', element: <CalendarNutritionist /> },
           ],
         },
         {
@@ -206,8 +230,11 @@ const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBoo
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
 const EcommerceProductList = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductList')));
+const EcommerceProductEdit = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductEdit')));
 const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductCreate')));
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
+const Basket = Loadable(lazy(() => import('../pages/dashboard/Basket')));
+const Order = Loadable(lazy(() => import('../pages/dashboard/Order')));
 
 // INVOICE
 const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')));
@@ -234,6 +261,11 @@ const AppointmentNutritionistList = Loadable(
 const AppointmentCreate = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentCreate')));
 const DoctorList = Loadable(lazy(() => import('../pages/dashboard/Appointment/DoctorList')));
 const CalendarNutritionist = Loadable(lazy(() => import('../pages/dashboard/Appointment/CalendarNutritionist')));
+
+// reviews
+const CxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/CxpForm')));
+const AddCxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/AddCxpForm')));
+const UpdateCxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/UpdateCxpForm')));
 
 // USER
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));

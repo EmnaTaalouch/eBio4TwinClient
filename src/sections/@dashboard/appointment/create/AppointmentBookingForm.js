@@ -34,15 +34,13 @@ AppointmentBookingForm.propTypes = {
   id: PropTypes.string,
 };
 
-export default function AppointmentBookingForm({isFromDoctorList,id}) {
+export default function AppointmentBookingForm({ isFromDoctorList, id }) {
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
   const [isloading, setIsLoading] = useState(false);
   const [listofNutritionist, setListofNutritionist] = useState([]);
-  const {currentUser} = useSelector((state)=>state.user);
-
-
+  const { currentUser } = useSelector((state) => state.user);
 
   const formik = useFormik({
     initialValues: {
@@ -60,28 +58,39 @@ export default function AppointmentBookingForm({isFromDoctorList,id}) {
       nutritionist: Yup.object().required('nutrition is required'),
       timeApt: Yup.number().required('Time is required'),
     }),
-    
+
     onSubmit: async (formData) => {
       try {
         //  const result = await AppointmentApi.updateAppointment(formData);
-        const result = await AppointmentApi.createAppointment({...formData,dateApt:new Date(formData.dateApt).setHours(0, 0, 0, 0),user:currentUser});
-       // toast.success('Your appointment has been successfully created');
-        enqueueSnackbar('Your appointment has been successfully created', { autoHideDuration: 3000,variant:'success' });
+        const result = await AppointmentApi.createAppointment({
+          ...formData,
+          dateApt: new Date(formData.dateApt).setHours(0, 0, 0, 0),
+          user: currentUser,
+        });
+        // toast.success('Your appointment has been successfully created');
+        enqueueSnackbar('Your appointment has been successfully created', {
+          autoHideDuration: 3000,
+          variant: 'success',
+        });
         navigate(PATH_DASHBOARD.appointment.list);
       } catch (err) {
-       // toast.error(err.response.data.message);
-       enqueueSnackbar(err.response.data.message, { autoHideDuration: 3000,variant:'error' });
+        // toast.error(err.response.data.message);
+        enqueueSnackbar(err.response.data.message, { autoHideDuration: 3000, variant: 'error' });
       }
     },
   });
 
-  useEffect(()=>{
-    UserApi.getUserByRole('nutritionist').then((r=>{
+  useEffect(() => {
+    UserApi.getUserByRole('nutritionist').then((r) => {
       setListofNutritionist(r);
-      isFromDoctorList && formik.setFieldValue('nutritionist',r.find((item)=>item._id===id));
-    }))
-      },[])
- 
+      isFromDoctorList &&
+        formik.setFieldValue(
+          'nutritionist',
+          r.find((item) => item._id === id)
+        );
+    });
+  }, []);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={3}>
@@ -92,24 +101,20 @@ export default function AppointmentBookingForm({isFromDoctorList,id}) {
                 id="nutritionist-select-demo"
                 // sx={{ width: 300 }}
                 value={formik.values.nutritionist}
-                onChange={(e,v)=>formik.setFieldValue('nutritionist', v)}
+                onChange={(e, v) => formik.setFieldValue('nutritionist', v)}
                 disabled={!!isFromDoctorList}
                 options={listofNutritionist}
                 autoHighlight
                 fullWidth
                 getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-                isOptionEqualToValue={(option, value) =>
-                  option._id === value._id
-                }
+                isOptionEqualToValue={(option, value) => option._id === value._id}
                 filterOptions={(options, { inputValue }) => {
                   const filter = inputValue.toLowerCase();
-                  return options.filter(
-                    (option) => {
-                      const fullName = `${option.firstName} ${option.lastName}`.toLowerCase();
-                      const filterValue = filter.toLowerCase();
-                      return fullName.indexOf(filterValue) !== -1;
-                    }
-                  );
+                  return options.filter((option) => {
+                    const fullName = `${option.firstName} ${option.lastName}`.toLowerCase();
+                    const filterValue = filter.toLowerCase();
+                    return fullName.indexOf(filterValue) !== -1;
+                  });
                 }}
                 noOptionsText={'No nutritionist found , Please try to search again !!'}
                 renderOption={(props, option) => (
@@ -117,8 +122,16 @@ export default function AppointmentBookingForm({isFromDoctorList,id}) {
                     <img
                       loading="lazy"
                       width="20"
-                      src={option.image ? option.image : 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg' }
-                      srcSet={option.image ? option.image : 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg'}
+                      src={
+                        option.image
+                          ? option.image
+                          : 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg'
+                      }
+                      srcSet={
+                        option.image
+                          ? option.image
+                          : 'https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_2.jpg'
+                      }
                       alt=""
                     />
                     {option.firstName} {option.lastName}
@@ -129,7 +142,7 @@ export default function AppointmentBookingForm({isFromDoctorList,id}) {
                     {...params}
                     fullWidth
                     label="Choose a nutritionist"
-                    error={formik.errors.nutritionist} 
+                    error={formik.errors.nutritionist}
                     helperText={formik.errors.nutritionist}
                     inputProps={{
                       ...params.inputProps,
@@ -138,27 +151,28 @@ export default function AppointmentBookingForm({isFromDoctorList,id}) {
                   />
                 )}
               />
-              <TextField name="locationApt" label="Location" value={formik.values.locationApt} onChange={formik.handleChange}  error={formik.errors.locationApt} helperText={formik.errors.locationApt}  />
+              <TextField
+                name="locationApt"
+                label="Location"
+                value={formik.values.locationApt}
+                onChange={formik.handleChange}
+                error={formik.errors.locationApt}
+                helperText={formik.errors.locationApt}
+              />
               <DatePicker
                 label="Date"
-                 value={formik.values.dateApt}
-                 onChange={(date) => formik.setFieldValue('dateApt', Date.parse(date))}
+                value={formik.values.dateApt}
+                onChange={(date) => formik.setFieldValue('dateApt', Date.parse(date))}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth  error={formik.errors.dateApt} helperText={formik.errors.dateApt} 
-                  />
+                  <TextField {...params} fullWidth error={formik.errors.dateApt} helperText={formik.errors.dateApt} />
                 )}
               />
               <TimePicker
                 label="Time"
-                 value={formik.values.timeApt}
-                 onChange={(time) => formik.setFieldValue('timeApt', Date.parse(time))}
+                value={formik.values.timeApt}
+                onChange={(time) => formik.setFieldValue('timeApt', Date.parse(time))}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth  error={formik.errors.timeApt} helperText={formik.errors.timeApt} 
-                  />
+                  <TextField {...params} fullWidth error={formik.errors.timeApt} helperText={formik.errors.timeApt} />
                 )}
               />
 
@@ -167,9 +181,9 @@ export default function AppointmentBookingForm({isFromDoctorList,id}) {
                 <Editor
                   simple
                   id={'reason'}
-                    value={formik.values.reasonApt}
-                    onChange={(reason)=>formik.setFieldValue('reasonApt', reason)}
-                    error={formik.errors.reasonApt}
+                  value={formik.values.reasonApt}
+                  onChange={(reason) => formik.setFieldValue('reasonApt', reason)}
+                  error={formik.errors.reasonApt}
                   helperText={
                     <FormHelperText error sx={{ px: 2, textTransform: 'capitalize' }}>
                       {formik.errors.reasonApt}
