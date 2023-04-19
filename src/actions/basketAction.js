@@ -23,6 +23,17 @@ export const orderApi = {
     const {data} = await api.post(`/createOrder/${userId}` , {consumptionDate} , {members} );
   
     return data;
+  },
+  async getAllOrders( ){
+    const {data} = await api.get(`/orders/` );
+  
+    return data;
+  },
+  async getOrderById(orderId ){
+    
+    const {data} = await api.get(`/order/${orderId}` );
+  
+    return data;
   }
   };
 
