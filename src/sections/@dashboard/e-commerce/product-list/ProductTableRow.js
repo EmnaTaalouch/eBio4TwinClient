@@ -1,6 +1,7 @@
+/* eslint-disable */
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -13,6 +14,8 @@ import Label from '../../../../components/Label';
 import Image from '../../../../components/Image';
 import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
+import { Link, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 //
 
 // ----------------------------------------------------------------------
@@ -35,6 +38,12 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
   };
+
+  const navigate = useNavigate();
+
+  const edit = () => {
+    navigate(`/dashboard/e-commerce/product/edit/${_id}`);
+  }
 
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
@@ -88,13 +97,13 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
+                  edit();
                   
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />
                 Edit
+                
               </MenuItem>
             </>
           }
