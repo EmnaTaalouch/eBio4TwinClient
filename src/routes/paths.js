@@ -82,7 +82,7 @@ export const PATH_DASHBOARD = {
     order: path(ROOTS_DASHBOARD, '/e-commerce/order'),
     new: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
     view: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}`),
-    edit: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}/edit`),
+    edit: (id) => path(ROOTS_DASHBOARD, `/e-commerce/product/edit/${id}`),
     demoEdit: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
     demoView: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
   },

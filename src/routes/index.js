@@ -81,7 +81,7 @@ export default function Router() {
             { path: 'product/:name', element: <EcommerceProductDetails /> },
             { path: 'list', element: <EcommerceProductList /> },
             { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+            { path: 'product/edit/:id', element: <EcommerceProductEdit /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
             { path: 'basket', element: <Basket /> },
             { path: 'order', element: <Order /> }
@@ -209,6 +209,7 @@ const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBoo
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
 const EcommerceProductList = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductList')));
+const EcommerceProductEdit = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductEdit')));
 const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductCreate')));
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const Basket = Loadable(lazy(() => import('../pages/dashboard/Basket')));
