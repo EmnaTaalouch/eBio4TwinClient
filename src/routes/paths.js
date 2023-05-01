@@ -50,6 +50,7 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/cxpForm/list'),
     addCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/addCxpForm/:id'),
     updateCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/updateCxpForm/:id'),
+    wasteForm : path(ROOTS_DASHBOARD, '/cxpForm/wasteForm/:id'),
   },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
