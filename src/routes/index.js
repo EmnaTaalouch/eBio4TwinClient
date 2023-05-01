@@ -107,6 +107,7 @@ export default function Router() {
             { path: 'list', element: <CxpForm /> },
             { path: 'addCxpForm/:id', element: <AddCxpForm /> },
             { path: 'updateCxpForm/:id', element: <UpdateCxpForm /> },
+            { path: 'wasteForm/:id', element: <WasteForm /> }
           ],
         },
         {
@@ -239,7 +240,7 @@ const Basket = Loadable(lazy(() => import('../pages/dashboard/Basket')));
 const Order = Loadable(lazy(() => import('../pages/dashboard/Order')));
 const OrderList = Loadable(lazy(()=> import('../pages/dashboard/OrderList')));
 const ShowProducts = Loadable(lazy(()=> import('../pages/dashboard/ShowProducts')));
-
+const WasteForm = Loadable(lazy(()=> import('../pages/dashboard/CxpForm/WasteForm')));
 
 // INVOICE
 const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')));

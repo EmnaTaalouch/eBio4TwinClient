@@ -7,7 +7,6 @@ import { orderApi } from '../../actions/basketAction';
 
 const ShowProducts = () => { 
   const { id } = useParams()
-  console.log(id);
   const [order, setOrder] = useState();
   const navigate = useNavigate();
 
@@ -16,7 +15,6 @@ const ShowProducts = () => {
     const fetchOrders = async () => {
       try {
         const response = await orderApi.getOrderById(id);
-        console.log(response)
         setOrder(response);
       } catch (error) {
         console.error('Failed to fetch orders:', error);
@@ -25,15 +23,15 @@ const ShowProducts = () => {
     fetchOrders();
   }, [ ]);
 
-  
-  console.log(order)
 
   return (
      <div>
     <ul>
       {order && order.ref && order.ref.map((product,index) => (
         <li key={index} product={product} > 
-        {console.log(product)} {product?.name}
+        <h1>{product[0].name}</h1>
+        <h1>{product[0].price}</h1>
+        <h1>{product[0].quantity}</h1>
         </li>
       ))}
     </ul>
