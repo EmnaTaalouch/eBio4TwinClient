@@ -190,6 +190,7 @@ export const nutritionistNavConfig = [
         path: PATH_DASHBOARD.eCommerce.root,
         icon: ICONS.cart,
       },
+      
     ],
   },
 ];

@@ -31,7 +31,7 @@ import CartWidget from '../../sections/@dashboard/e-commerce/CartWidget';
 
 export default function EcommerceShop() {
   const { themeStretch } = useSettings();
-  const [prods,setProds]=useState([]);
+  const [prods, setProds] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -67,7 +67,7 @@ export default function EcommerceShop() {
   useEffect(() => {
     dispatch(getProducts());
     const token = localStorage.getItem('token');
-    console.log(currentUser._id)
+    console.log(currentUser._id);
     tryFetch();
   }, [dispatch]);
 
@@ -114,7 +114,7 @@ export default function EcommerceShop() {
     const response = await axios.get('http://localhost:5000/product/list');
     console.log(response.data);
     setProds(response.data);
-  }
+  };
 
   return (
     <Page title="Ecommerce: Shop">
@@ -175,7 +175,7 @@ export default function EcommerceShop() {
             </>
           )}
         </Stack>
-        <ShopProductList products={prods}  />
+        <ShopProductList products={prods} />
         <CartWidget />
       </Container>
     </Page>

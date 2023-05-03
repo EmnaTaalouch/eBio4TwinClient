@@ -1,12 +1,14 @@
+/* eslint-disable */
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useMemo,useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Form, Button } from 'react-bootstrap';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
@@ -25,6 +27,7 @@ import {
 } from '../../../components/hook-form';
 import { useSelector } from '../../../redux/store';
 import { UserApi } from '../../../actions/userAction';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -68,27 +71,28 @@ ProductNewEditForm.propTypes = {
 export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const [product,setProduct] = useState({
+  const [product, setProduct] = useState({
     name: '',
     description: 'test',
-    quantity:0,
-    price:0,
-    farmer:currentUser._id,
+    image: '',
+    quantity: 0,
+    price: 0,
+    farmer: currentUser._id,
   });
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     description: Yup.string().required('Description is required'),
-    images: Yup.array().min(1, 'Images is required'),
-    price: Yup.number().moreThan(0, 'Price should not be $0.00'),
+    image: Yup.array().min(1, 'Images is required'),
+    price: Yup.number().moreThan(0, 'Price should not be TND0.00'),
   });
 
   const defaultValues = useMemo(
     () => ({
       name: currentProduct?.name || '',
       description: currentProduct?.description || '',
-      images: currentProduct?.images || [],
+      image: currentProduct?.image || [],
       code: currentProduct?.code || '',
       sku: currentProduct?.sku || '',
       price: currentProduct?.price || 0,
@@ -164,33 +168,54 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
     setValue('images', filteredItems);
   };
 
-  const handleChanges=(e)=>{ 
-    console.log(e.target.name)
-    setProduct({...product,[e.target.name]:e.target.value});
-    console.log(product)
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setProduct({ ...product, image: reader.result });
+    };
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
+  };
+
+  const handleOnchangeFile = (e) => {
+    console.log(e.target.value);
+    const file = e.target.files[0];
+    setFileToBase(file);
+
+    //setProduct({...product,image:e.target.files[0]})
+    console.log(file);
+  };
+
+  const handleChanges = (e) => {
+    console.log(e.target.name);
+    setProduct({ ...product, [e.target.name]: e.target.value });
+    console.log(product);
   };
   // const test = ()=>{
   //   console.log(value)
   //   // setProduct({...product,description:e.value});
   // }
-  const submitProduct=async()=> {
-    setProduct({...product,farmer:currentUser._id});
+  const submitProduct = async () => {
+    setProduct({ ...product, farmer: currentUser._id });
     try {
-      const res = await axios.post('http://localhost:5000/product/add',product);
+      const res = await axios.post('http://localhost:5000/product/add', product);
       navigate('/dashboard/e-commerce/list');
       console.log(res);
-
+      toast.success('Product added successfully');
     } catch (error) {
       console.log(error);
+      toast.error('Something went wrong');
     }
-  }
+  };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e)=>handleChanges(e)} />
+              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e) => handleChanges(e)} />
 
               <div>
                 <LabelStyle>Description</LabelStyle>
@@ -198,16 +223,20 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
               </div>
 
               <div>
-                <LabelStyle>Images</LabelStyle>
-                <RHFUploadMultiFile
+                <LabelStyle>Image</LabelStyle>
+                {/* <RHFUploadMultiFile
                   name="images"
                   showPreview
                   accept="image/*"
                   maxSize={3145728}
+                  onChange={(e)=>handleOnchangeFile(e)}
                   onDrop={handleDrop}
                   onRemove={handleRemove}
                   onRemoveAll={handleRemoveAll}
-                />
+                /> */}
+                <Form.Group className="mb-3">
+                  <Form.Control type="file" placeholder="Enter image" name="image" onChange={handleOnchangeFile} />
+                </Form.Group>
               </div>
             </Stack>
           </Card>
@@ -274,10 +303,10 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   label="Regular Price"
                   placeholder="0.00"
                   value={product.price}
-                  onChange={(e)=>handleChanges(e)}
+                  onChange={(e) => handleChanges(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    startAdornment: <InputAdornment position="start">TND</InputAdornment>,
                     type: 'number',
                   }}
                 />
@@ -287,7 +316,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   label="Quantity"
                   placeholder="0.00"
                   value={product.quantity}
-                  onChange={(e)=>handleChanges(e)}
+                  onChange={(e) => handleChanges(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start" />,
@@ -299,7 +328,13 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
               <RHFSwitch name="taxes" label="Price includes taxes" />
             </Card>
 
-            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting} onClick={()=>submitProduct()}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+              onClick={() => submitProduct()}
+            >
               {!isEdit ? 'Create Product' : 'Save Changes'}
             </LoadingButton>
           </Stack>
