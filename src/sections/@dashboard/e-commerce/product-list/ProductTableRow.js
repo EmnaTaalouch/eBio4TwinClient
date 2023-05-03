@@ -16,6 +16,7 @@ import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 //
 
 // ----------------------------------------------------------------------
@@ -31,7 +32,7 @@ ProductTableRow.propTypes = {
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { _id, name, cover, date, quantity, price } = row;
+  const { _id, name, image, date, quantity, price } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -52,8 +53,10 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
     try {
       const response = await axios.delete(`http://localhost:5000/product/delete/${_id}`);
       window.location.reload();
+      toast.success("Product deleted successfully")
     } catch(e) {
       console.log(e);
+      toast.error("Error deleting product")
     }
   }
   return (
@@ -63,7 +66,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
       </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Image disabledEffect alt={name} src={cover} sx={{ borderRadius: 1.5, width: 48, height: 48, mr: 2 }} />
+        <Image disabledEffect alt={name} src={image.url} sx={{ borderRadius: 1.5, width: 48, height: 48, mr: 2 }} />
         <Typography variant="subtitle2" noWrap>
           {name}
         </Typography>

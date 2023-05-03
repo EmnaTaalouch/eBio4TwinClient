@@ -15,6 +15,7 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import {toast} from 'react-toastify';
 // components
 import {
   FormProvider,
@@ -173,10 +174,16 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
   }
 
   const UpdateProduct =async ()=> {
-    const res = await axios.put(`http://localhost:5000/product/edit/${currentProduct._id}`,product);
-    console.log(res);
-    if (res.status === 200) {
+    try{
+      const res = await axios.put(`http://localhost:5000/product/edit/${currentProduct._id}`,product);
+      console.log(res);
+      toast.success('Product Updated Successfully');
+      if (res.status === 200) {
         navigate('/dashboard/e-commerce/list');
+    }
+    }catch(error){
+      console.log(error);
+      toast.error('Something went wrong');
     }
 }
 
