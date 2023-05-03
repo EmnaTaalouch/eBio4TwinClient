@@ -39,7 +39,11 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 import { AppointmentTableRow, AppointmentTableToolbar } from '../../../sections/@dashboard/appointment/list';
 
 // redux
-import { fetchAppointmentByNutritionist, removeAppointmentFromList, updateAppointmentFromList } from '../../../redux/slices/appointmentSlice';
+import {
+  fetchAppointmentByNutritionist,
+  removeAppointmentFromList,
+  updateAppointmentFromList,
+} from '../../../redux/slices/appointmentSlice';
 import { AppointmentApi } from '../../../actions/appointmentAction';
 
 // ----------------------------------------------------------------------
@@ -84,14 +88,14 @@ export default function AppointmentNutritionistList() {
 
   const navigate = useNavigate();
 
-    const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   const [filterName, setFilterName] = useState('');
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (step) {
+    if (currentUser) {
       dispatch(fetchAppointmentByNutritionist(currentUser?._id));
       // setTableData(appointments);
     }
@@ -104,11 +108,11 @@ export default function AppointmentNutritionistList() {
     setPage(0);
   };
 
-  const handleAcceptRow = async(row) => {
-    const res=await AppointmentApi.acceptOrDeclineAppointment(row._id,'accepted');
+  const handleAcceptRow = async (row) => {
+    const res = await AppointmentApi.acceptOrDeclineAppointment(row._id, 'accepted');
     console.log(res);
     dispatch(removeAppointmentFromList(res));
-    enqueueSnackbar('Appointment have been accepted', { autoHideDuration: 3000,variant:'success' });
+    enqueueSnackbar('Appointment have been accepted', { autoHideDuration: 3000, variant: 'success' });
   };
 
   const handleDeleteRows = (selected) => {
@@ -118,9 +122,9 @@ export default function AppointmentNutritionistList() {
   };
 
   const handleDeclineRow = async (row) => {
-    const res=await AppointmentApi.acceptOrDeclineAppointment(row._id,'declined');
+    const res = await AppointmentApi.acceptOrDeclineAppointment(row._id, 'declined');
     dispatch(removeAppointmentFromList(res));
-    enqueueSnackbar('Appointment have been declined', { autoHideDuration: 3000,variant:'info' });
+    enqueueSnackbar('Appointment have been declined', { autoHideDuration: 3000, variant: 'info' });
   };
 
   useEffect(() => {
@@ -253,14 +257,11 @@ function applySortFilter({ appointments, comparator, filterName }) {
   let filteredAppointments = stabilizedThis?.map((el) => el[0]);
 
   if (filterName) {
-    filteredAppointments = filteredAppointments?.filter(
-      (item) => {
-        const fullName = `${item.nutritionist.firstName} ${item.nutritionist.lastName}`.toLowerCase();
-        const filterValue = filterName.toLowerCase();
-        return fullName.indexOf(filterValue) !== -1;
-      }
-    );
-    
+    filteredAppointments = filteredAppointments?.filter((item) => {
+      const fullName = `${item.nutritionist.firstName} ${item.nutritionist.lastName}`.toLowerCase();
+      const filterValue = filterName.toLowerCase();
+      return fullName.indexOf(filterValue) !== -1;
+    });
   }
   return filteredAppointments;
 }

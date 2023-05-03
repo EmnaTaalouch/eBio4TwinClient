@@ -62,7 +62,7 @@ export default function CalendarNutritionist() {
   const { events, isOpenModal, selectedRange } = useSelector((state) => state.appointment);
 
   useEffect(() => {
-    if (step) {
+    if (currentUser) {
       dispatch(getAppointmentsFromCalendar(currentUser?._id));
     }
   }, [dispatch, currentUser]);
