@@ -36,12 +36,13 @@ const RootStyle = styled(RouterLink)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function CartWidget() {
-  const { checkout } = useSelector((state) => state.product);
-  const totalItems = sum(checkout.cart.map((item) => item.quantity));
+  // const { basket } = useSelector((state) => state.product);
+  // const totalItems = sum(basket.cart.map((item) => item.quantity));
 
   return (
-    <RootStyle to={PATH_DASHBOARD.eCommerce.checkout}>
-      <Badge showZero badgeContent={totalItems} color="error" max={99}>
+    <RootStyle to={PATH_DASHBOARD.eCommerce.basket}>
+      {/* showZero badgeContent={totalItems} color="error" max={99} */}
+      <Badge >
         <Iconify icon={'eva:shopping-cart-fill'} width={24} height={24} />
       </Badge>
     </RootStyle>

@@ -8,8 +8,10 @@ import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
 import userSlice from './slices/userSlice';
-import appointmentSlice from './slices/appointmentSlice';
 
+import questionSlice from './slices/questionSlice';
+import cxpSlice from './slices/cxpSlice';
+import appointmentSlice from './slices/appointmentSlice';
 // ----------------------------------------------------------------------
 
 const rootPersistConfig = {
@@ -33,6 +35,8 @@ const rootReducer = combineReducers({
   kanban: kanbanReducer,
   user: userSlice,
   appointment: appointmentSlice,
+  reviews: cxpSlice,
+  question: questionSlice,
   product: persistReducer(productPersistConfig, productReducer),
 });
 

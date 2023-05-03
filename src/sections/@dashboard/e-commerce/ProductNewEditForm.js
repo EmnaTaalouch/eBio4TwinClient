@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo,useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,6 +23,8 @@ import {
   RHFRadioGroup,
   RHFUploadMultiFile,
 } from '../../../components/hook-form';
+import { useSelector } from '../../../redux/store';
+import { UserApi } from '../../../actions/userAction';
 
 // ----------------------------------------------------------------------
 
@@ -63,8 +66,15 @@ ProductNewEditForm.propTypes = {
 };
 
 export default function ProductNewEditForm({ isEdit, currentProduct }) {
+  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
-
+  const [product,setProduct] = useState({
+    name: '',
+    description: 'test',
+    quantity:0,
+    price:0,
+    farmer:currentUser._id,
+  });
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
@@ -154,13 +164,33 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
     setValue('images', filteredItems);
   };
 
+  const handleChanges=(e)=>{ 
+    console.log(e.target.name)
+    setProduct({...product,[e.target.name]:e.target.value});
+    console.log(product)
+  };
+  // const test = ()=>{
+  //   console.log(value)
+  //   // setProduct({...product,description:e.value});
+  // }
+  const submitProduct=async()=> {
+    setProduct({...product,farmer:currentUser._id});
+    try {
+      const res = await axios.post('http://localhost:5000/product/add',product);
+      navigate('/dashboard/e-commerce/list');
+      console.log(res);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <RHFTextField name="name" label="Product Name" />
+              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e)=>handleChanges(e)} />
 
               <div>
                 <LabelStyle>Description</LabelStyle>
@@ -185,7 +215,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
 
         <Grid item xs={12} md={4}>
           <Stack spacing={3}>
-            <Card sx={{ p: 3 }}>
+            {/* <Card sx={{ p: 3 }}>
               <RHFSwitch name="inStock" label="In stock" />
 
               <Stack spacing={3} mt={2}>
@@ -235,7 +265,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   )}
                 />
               </Stack>
-            </Card>
+            </Card> */}
 
             <Card sx={{ p: 3 }}>
               <Stack spacing={3} mb={2}>
@@ -243,8 +273,8 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   name="price"
                   label="Regular Price"
                   placeholder="0.00"
-                  value={getValues('price') === 0 ? '' : getValues('price')}
-                  onChange={(event) => setValue('price', Number(event.target.value))}
+                  value={product.price}
+                  onChange={(e)=>handleChanges(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -253,14 +283,14 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                 />
 
                 <RHFTextField
-                  name="priceSale"
-                  label="Sale Price"
+                  name="quantity"
+                  label="Quantity"
                   placeholder="0.00"
-                  value={getValues('priceSale') === 0 ? '' : getValues('priceSale')}
-                  onChange={(event) => setValue('price', Number(event.target.value))}
+                  value={product.quantity}
+                  onChange={(e)=>handleChanges(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    startAdornment: <InputAdornment position="start" />,
                     type: 'number',
                   }}
                 />
@@ -269,7 +299,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
               <RHFSwitch name="taxes" label="Price includes taxes" />
             </Card>
 
-            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
+            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting} onClick={()=>submitProduct()}>
               {!isEdit ? 'Create Product' : 'Save Changes'}
             </LoadingButton>
           </Stack>

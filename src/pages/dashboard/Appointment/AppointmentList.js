@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { paramCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -40,11 +39,7 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 import { AppointmentTableRow, AppointmentTableToolbar } from '../../../sections/@dashboard/appointment/list';
 
 // redux
-import {
-  fetchAppointmentByClient,
-  removeAppointmentFromList,
-  updateAppointmentFromList,
-} from '../../../redux/slices/appointmentSlice';
+import { fetchAppointmentByClient, removeAppointmentFromList } from '../../../redux/slices/appointmentSlice';
 import { AppointmentApi } from '../../../actions/appointmentAction';
 
 // ----------------------------------------------------------------------

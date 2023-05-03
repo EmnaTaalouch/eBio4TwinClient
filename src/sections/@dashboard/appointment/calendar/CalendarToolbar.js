@@ -13,8 +13,6 @@ import Iconify from '../../../../components/Iconify';
 
 const VIEW_OPTIONS = [
   { value: 'dayGridMonth', label: 'Month', icon: 'ic:round-view-module' },
-  { value: 'timeGridWeek', label: 'Week', icon: 'ic:round-view-week' },
-  { value: 'timeGridDay', label: 'Day', icon: 'ic:round-view-day' },
   { value: 'listWeek', label: 'Agenda', icon: 'ic:round-view-agenda' },
 ];
 

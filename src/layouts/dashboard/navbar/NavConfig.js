@@ -128,10 +128,11 @@ export const userNavConfig = [
   {
     subheader: 'user management',
     items: [
+      { title: 'Shop', path: PATH_DASHBOARD.eCommerce.shop, icon: ICONS.invoice },
       // Recommandation
       {
         title: 'Recommandation',
-        path: PATH_DASHBOARD.user.root,
+        path: PATH_DASHBOARD.recommandation.lists,
         icon: ICONS.user,
         // children: [{ title: 'rrrrr', path: PATH_DASHBOARD.user.profile }],
       },
@@ -143,8 +144,10 @@ export const userNavConfig = [
         icon: ICONS.cart,
         children: [
           { title: 'Home', path: PATH_DASHBOARD.eCommerce.shop },
-          { title: 'Questions Forum', path: PATH_DASHBOARD.eCommerce.demoView },
+          { title: 'Questions Forum', path: PATH_DASHBOARD.question.forum },
           { title: 'Appointments', path: PATH_DASHBOARD.appointment.list },
+          { title: 'Orders', path: PATH_DASHBOARD.eCommerce.orderList },
+          { title: 'Reviews', path: PATH_DASHBOARD.cxpForm.list },
           { title: 'Private Messages', path: PATH_DASHBOARD.chat.root },
           { title: 'Doctors', path: PATH_DASHBOARD.appointment.doctors },
         ],
@@ -174,7 +177,7 @@ export const nutritionistNavConfig = [
       },
       {
         title: 'Question Forum',
-        path: PATH_DASHBOARD.eCommerce.root,
+        path: PATH_DASHBOARD.question.forumN,
         icon: ICONS.cart,
       },
       {
@@ -200,7 +203,26 @@ export const adminNavConfig = [
   },
   {
     subheader: 'Account Management',
-    items: [{ title: 'user list', path: PATH_DASHBOARD.user.list, icon: ICONS.user }],
+    items: [
+      { title: 'user list', path: PATH_DASHBOARD.user.list, icon: ICONS.user },
+      { title: 'Reviews', path: PATH_DASHBOARD.cxpForm.list, icon: ICONS.blog },
+    ],
+  },
+];
+
+export const farmerNavConfig = [
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Dashboard',
+    items: [{ title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard }],
+  },
+  {
+    subheader: 'Account Management',
+    items: [
+      { title: 'Manage products', path: PATH_DASHBOARD.eCommerce.list, icon: ICONS.items },
+      { title: 'Add product', path: PATH_DASHBOARD.eCommerce.new, icon: ICONS.blog },
+    ],
   },
 ];
 

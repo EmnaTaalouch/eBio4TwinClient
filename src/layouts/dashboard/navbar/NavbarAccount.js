@@ -31,7 +31,7 @@ NavbarAccount.propTypes = {
 };
 
 export default function NavbarAccount({ isCollapse }) {
-  const { currentUser } = useSelector((state)=>state.user);
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <Link underline="none" color="inherit" component={RouterLink} to={PATH_DASHBOARD.user.account}>
       <RootStyle
@@ -57,7 +57,7 @@ export default function NavbarAccount({ isCollapse }) {
           }}
         >
           <Typography variant="subtitle2" noWrap>
-            {currentUser?.firstName + currentUser?.lastName}
+            {`${currentUser?.firstName} ${currentUser?.lastName}`}
           </Typography>
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
             {currentUser?.role}

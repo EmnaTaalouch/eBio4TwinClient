@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
+
 import UserPage from '../sections/@dashboard/admin/UserPage';
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
@@ -79,8 +80,12 @@ export default function Router() {
             { path: 'product/:name', element: <EcommerceProductDetails /> },
             { path: 'list', element: <EcommerceProductList /> },
             { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
+            { path: 'product/edit/:id', element: <EcommerceProductEdit /> },
             { path: 'checkout', element: <EcommerceCheckout /> },
+            { path: 'basket', element: <Basket /> },
+            { path: 'order', element: <Order /> },
+            { path: 'orderList', element: <OrderList /> },
+            { path: 'showProducts/:id', element: <ShowProducts /> },
           ],
         },
         {
@@ -96,6 +101,16 @@ export default function Router() {
           ],
         },
         {
+          path: 'cxpForm',
+          children: [
+            { element: <Navigate to="/cxpForm/list" replace />, index: true },
+            { path: 'list', element: <CxpForm /> },
+            { path: 'addCxpForm/:id', element: <AddCxpForm /> },
+            { path: 'updateCxpForm/:id', element: <UpdateCxpForm /> },
+            { path: 'wasteForm/:id', element: <WasteForm /> },
+          ],
+        },
+        {
           path: 'appointment',
           children: [
             { element: <Navigate to="/appointment/list" replace />, index: true },
@@ -105,6 +120,23 @@ export default function Router() {
             { path: 'book/:id/doctorList', element: <AppointmentCreate /> },
             { path: 'doctors', element: <DoctorList /> },
             { path: 'calendarN', element: <CalendarNutritionist /> },
+          ],
+        },
+        {
+          path: 'recommandation',
+          children: [
+            { element: <Navigate to="/recommandation/list" replace />, index: true },
+            { path: 'list', element: <RecommandationList /> },
+          ],
+        },
+        {
+          path: 'question',
+          children: [
+            { element: <Navigate to="/question/forum" replace />, index: true },
+            { path: 'forum', element: <QuestionForum /> },
+            { path: 'forumN', element: <QuestionNutritionistForum /> },
+            { path: 'new', element: <QuestionNew /> },
+            { path: 'detail/:id', element: <QuestionDetails /> },
           ],
         },
         {
@@ -185,6 +217,9 @@ const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 
 // DASHBOARD
 
+// RECOMMANDATION
+const RecommandationList = Loadable(lazy(() => import('../pages/dashboard/Recommandation/RecommandationList')));
+
 // GENERAL
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
 const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
@@ -196,8 +231,14 @@ const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBoo
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
 const EcommerceProductList = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductList')));
+const EcommerceProductEdit = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductEdit')));
 const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductCreate')));
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
+const Basket = Loadable(lazy(() => import('../pages/dashboard/Basket')));
+const Order = Loadable(lazy(() => import('../pages/dashboard/Order')));
+const OrderList = Loadable(lazy(() => import('../pages/dashboard/OrderList')));
+const ShowProducts = Loadable(lazy(() => import('../pages/dashboard/ShowProducts')));
+const WasteForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/WasteForm')));
 
 // INVOICE
 const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')));
@@ -210,6 +251,12 @@ const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
 const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 
+// QUESTION
+const QuestionForum = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionForum')));
+const QuestionNutritionistForum = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionNutritionistForum')));
+const QuestionNew = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionNew')));
+const QuestionDetails = Loadable(lazy(() => import('../pages/dashboard/Question/QuestionDetails')));
+
 // APPOINTMENT
 const AppointmentList = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentList')));
 const AppointmentNutritionistList = Loadable(
@@ -218,6 +265,11 @@ const AppointmentNutritionistList = Loadable(
 const AppointmentCreate = Loadable(lazy(() => import('../pages/dashboard/Appointment/AppointmentCreate')));
 const DoctorList = Loadable(lazy(() => import('../pages/dashboard/Appointment/DoctorList')));
 const CalendarNutritionist = Loadable(lazy(() => import('../pages/dashboard/Appointment/CalendarNutritionist')));
+
+// reviews
+const CxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/CxpForm')));
+const AddCxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/AddCxpForm')));
+const UpdateCxpForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/UpdateCxpForm')));
 
 // USER
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));

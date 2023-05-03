@@ -38,7 +38,22 @@ export const PATH_DASHBOARD = {
     book: path(ROOTS_DASHBOARD, '/appointment/book'),
     bookFromDoctor: (id) => path(ROOTS_DASHBOARD, `/appointment/book/${id}/doctorList`),
     doctors: path(ROOTS_DASHBOARD, '/appointment/doctors'),
-    calendarN: path(ROOTS_DASHBOARD,'/appointment/calendarN')
+    calendarN: path(ROOTS_DASHBOARD, '/appointment/calendarN'),
+  },
+  recommandation: {
+    lists: path(ROOTS_DASHBOARD, '/recommandation/list'),
+  },
+  question: {
+    forum: path(ROOTS_DASHBOARD, '/question/forum'),
+    forumN: path(ROOTS_DASHBOARD, '/question/forumN'),
+    new: path(ROOTS_DASHBOARD, '/question/new'),
+    detail: (id) => path(ROOTS_DASHBOARD, `/question/detail/${id}`),
+  },
+  cxpForm: {
+    list: path(ROOTS_DASHBOARD, '/cxpForm/list'),
+    addCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/addCxpForm/:id'),
+    updateCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/updateCxpForm/:id'),
+    wasteForm: path(ROOTS_DASHBOARD, '/cxpForm/wasteForm/:id'),
   },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
@@ -73,9 +88,13 @@ export const PATH_DASHBOARD = {
     shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
     list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
     checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
+    basket: path(ROOTS_DASHBOARD, '/e-commerce/basket'),
+    order: path(ROOTS_DASHBOARD, '/e-commerce/order'),
+    orderList: path(ROOTS_DASHBOARD, '/e-commerce/orderList'),
+    showProducts: path(ROOTS_DASHBOARD, '/e-commerce/showProducts/:id'),
     new: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
     view: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}`),
-    edit: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}/edit`),
+    edit: (id) => path(ROOTS_DASHBOARD, `/e-commerce/product/edit/${id}`),
     demoEdit: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
     demoView: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
   },

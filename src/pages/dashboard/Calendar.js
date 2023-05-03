@@ -54,6 +54,7 @@ export default function Calendar() {
   useEffect(() => {
     dispatch(getEvents());
   }, [dispatch]);
+console.log(events);
 
   useEffect(() => {
     const calendarEl = calendarRef.current;
