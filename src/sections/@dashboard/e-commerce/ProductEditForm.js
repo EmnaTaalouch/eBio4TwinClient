@@ -5,7 +5,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useMemo,useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,7 +15,7 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 // components
 import {
   FormProvider,
@@ -160,34 +160,33 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
     setValue('images', filteredItems);
   };
 
-  
-    const [product,setProduct]=React.useState({
-        "_id":currentProduct._id,
-        "name":currentProduct.name,
-        "description": currentProduct.description,
-        "quantity": currentProduct.quantity,
-        "price": currentProduct.price,
-    })
+  const [product, setProduct] = React.useState({
+    _id: currentProduct._id,
+    name: currentProduct.name,
+    description: currentProduct.description,
+    quantity: currentProduct.quantity,
+    price: currentProduct.price,
+  });
 
-    const onValueChange = (e) => {
-      setProduct({...product, [e.target.name]: e.target.value})
-  }
+  const onValueChange = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
 
-  const UpdateProduct =async ()=> {
-    try{
-      const res = await axios.put(`http://localhost:5000/product/edit/${currentProduct._id}`,product);
+  const UpdateProduct = async () => {
+    try {
+      const res = await axios.put(`http://localhost:5000/product/edit/${currentProduct._id}`, product);
       console.log(res);
       toast.success('Product Updated Successfully');
       if (res.status === 200) {
         navigate('/dashboard/e-commerce/list');
-    }
-    }catch(error){
+      }
+    } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
     }
-}
+  };
 
-  // const handleChanges=(e)=>{ 
+  // const handleChanges=(e)=>{
   //   console.log(e.target.name)
   //   setProduct({...product,[e.target.name]:e.target.value});
   //   console.log(product)
@@ -211,7 +210,7 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e)=>onValueChange(e)} />
+              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e) => onValueChange(e)} />
 
               <div>
                 <LabelStyle>Description</LabelStyle>
@@ -295,7 +294,7 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
                   label="Regular Price"
                   placeholder="0.00"
                   value={product.price}
-                  onChange={(e)=>onValueChange(e)}
+                  onChange={(e) => onValueChange(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -308,7 +307,7 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
                   label="Quantity"
                   placeholder="0.00"
                   value={product.quantity}
-                  onChange={(e)=>onValueChange(e)}
+                  onChange={(e) => onValueChange(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start" />,
@@ -320,7 +319,13 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
               <RHFSwitch name="taxes" label="Price includes taxes" />
             </Card>
 
-            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting} onClick={()=>UpdateProduct()}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+              onClick={() => UpdateProduct()}
+            >
               {!isEdit ? 'Create Product' : 'Save Changes'}
             </LoadingButton>
           </Stack>

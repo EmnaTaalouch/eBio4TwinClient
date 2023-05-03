@@ -17,7 +17,7 @@ import {
   AccountGeneral,
   AccountBilling,
   AccountSocialLinks,
-  AccountNotifications,
+  AccountProfilling,
   AccountChangePassword,
 } from '../../../sections/@dashboard/user/account';
 
@@ -37,7 +37,7 @@ export default function UserAccount() {
     {
       value: 'profilling',
       icon: <Iconify icon={'eva:share-fill'} width={20} height={20} />,
-      component: <> </>,
+      component: <AccountProfilling />,
     },
     {
       value: 'change_password',

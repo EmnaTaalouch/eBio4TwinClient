@@ -85,7 +85,7 @@ export default function Router() {
             { path: 'basket', element: <Basket /> },
             { path: 'order', element: <Order /> },
             { path: 'orderList', element: <OrderList /> },
-            { path: 'showProducts/:id', element: <ShowProducts /> }
+            { path: 'showProducts/:id', element: <ShowProducts /> },
           ],
         },
         {
@@ -107,7 +107,7 @@ export default function Router() {
             { path: 'list', element: <CxpForm /> },
             { path: 'addCxpForm/:id', element: <AddCxpForm /> },
             { path: 'updateCxpForm/:id', element: <UpdateCxpForm /> },
-            { path: 'wasteForm/:id', element: <WasteForm /> }
+            { path: 'wasteForm/:id', element: <WasteForm /> },
           ],
         },
         {
@@ -123,15 +123,10 @@ export default function Router() {
           ],
         },
         {
-          path: 'appointment',
+          path: 'recommandation',
           children: [
-            { element: <Navigate to="/appointment/list" replace />, index: true },
-            { path: 'list', element: <AppointmentList /> },
-            { path: 'listN', element: <AppointmentNutritionistList /> },
-            { path: 'book', element: <AppointmentCreate /> },
-            { path: 'book/:id/doctorList', element: <AppointmentCreate /> },
-            { path: 'doctors', element: <DoctorList /> },
-            { path: 'calendarN', element: <CalendarNutritionist /> },
+            { element: <Navigate to="/recommandation/list" replace />, index: true },
+            { path: 'list', element: <RecommandationList /> },
           ],
         },
         {
@@ -222,6 +217,9 @@ const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 
 // DASHBOARD
 
+// RECOMMANDATION
+const RecommandationList = Loadable(lazy(() => import('../pages/dashboard/Recommandation/RecommandationList')));
+
 // GENERAL
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
 const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
@@ -238,9 +236,9 @@ const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/Ec
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const Basket = Loadable(lazy(() => import('../pages/dashboard/Basket')));
 const Order = Loadable(lazy(() => import('../pages/dashboard/Order')));
-const OrderList = Loadable(lazy(()=> import('../pages/dashboard/OrderList')));
-const ShowProducts = Loadable(lazy(()=> import('../pages/dashboard/ShowProducts')));
-const WasteForm = Loadable(lazy(()=> import('../pages/dashboard/CxpForm/WasteForm')));
+const OrderList = Loadable(lazy(() => import('../pages/dashboard/OrderList')));
+const ShowProducts = Loadable(lazy(() => import('../pages/dashboard/ShowProducts')));
+const WasteForm = Loadable(lazy(() => import('../pages/dashboard/CxpForm/WasteForm')));
 
 // INVOICE
 const InvoiceList = Loadable(lazy(() => import('../pages/dashboard/InvoiceList')));

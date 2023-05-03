@@ -36,6 +36,24 @@ export function remToPx(value) {
   return Math.round(parseFloat(value) * 16);
 }
 
+export function validateToGenerateRecommandation(age, height, weight, gender, activity, numberofmeals, goal) {
+  console.log('age    ', age);
+  console.log('height    ', height);
+  console.log('weight    ', weight);
+  console.log('gender    ', gender);
+  console.log('numberofmeals    ', numberofmeals);
+  console.log('goal    ', goal);
+  if (age === undefined || age === '' || age === null) return false;
+  if (height === undefined || height === '' || height === null) return false;
+  if (weight === undefined || weight === '' || weight === null) return false;
+  if (gender === undefined || gender === '' || gender === null) return false;
+  if (activity === undefined || activity === '' || activity === null) return false;
+  if (numberofmeals === undefined || numberofmeals === '' || numberofmeals === null) return false;
+  if (goal === undefined || goal === '' || goal === null) return false;
+
+  return true;
+}
+
 export function pxToRem(value) {
   return `${value / 16}rem`;
 }
@@ -52,6 +70,22 @@ export function responsiveFontSizes({ sm, md, lg }) {
       fontSize: pxToRem(lg),
     },
   };
+}
+
+export function capitalizeFirstLetter(string) {
+  return string?.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function calculateAge(birthDate) {
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    // eslint-disable-next-line no-plusplus
+    age--;
+  }
+  return age;
 }
 
 // ----------------------------------------------------------------------

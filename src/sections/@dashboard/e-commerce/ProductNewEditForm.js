@@ -4,11 +4,11 @@ import axios from 'axios';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useMemo,useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {Form,Button} from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
@@ -27,7 +27,7 @@ import {
 } from '../../../components/hook-form';
 import { useSelector } from '../../../redux/store';
 import { UserApi } from '../../../actions/userAction';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -71,13 +71,13 @@ ProductNewEditForm.propTypes = {
 export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const [product,setProduct] = useState({
+  const [product, setProduct] = useState({
     name: '',
     description: 'test',
     image: '',
-    quantity:0,
-    price:0,
-    farmer:currentUser._id,
+    quantity: 0,
+    price: 0,
+    farmer: currentUser._id,
   });
   const { enqueueSnackbar } = useSnackbar();
 
@@ -172,54 +172,50 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      setProduct({...product,image:reader.result});
+      setProduct({ ...product, image: reader.result });
     };
     reader.onerror = (error) => {
       console.log('Error: ', error);
     };
   };
 
-
-  const handleOnchangeFile=(e)=>{
+  const handleOnchangeFile = (e) => {
     console.log(e.target.value);
     const file = e.target.files[0];
     setFileToBase(file);
 
     //setProduct({...product,image:e.target.files[0]})
     console.log(file);
-}
+  };
 
-
-
-  const handleChanges=(e)=>{ 
-    console.log(e.target.name)
-    setProduct({...product,[e.target.name]:e.target.value});
-    console.log(product)
+  const handleChanges = (e) => {
+    console.log(e.target.name);
+    setProduct({ ...product, [e.target.name]: e.target.value });
+    console.log(product);
   };
   // const test = ()=>{
   //   console.log(value)
   //   // setProduct({...product,description:e.value});
   // }
-  const submitProduct=async()=> {
-    setProduct({...product,farmer:currentUser._id});
+  const submitProduct = async () => {
+    setProduct({ ...product, farmer: currentUser._id });
     try {
-      const res = await axios.post('http://localhost:5000/product/add',product);
+      const res = await axios.post('http://localhost:5000/product/add', product);
       navigate('/dashboard/e-commerce/list');
       console.log(res);
       toast.success('Product added successfully');
-
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
     }
-  }
+  };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e)=>handleChanges(e)} />
+              <RHFTextField name="name" label="Product Name" value={product.name} onChange={(e) => handleChanges(e)} />
 
               <div>
                 <LabelStyle>Description</LabelStyle>
@@ -239,7 +235,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   onRemoveAll={handleRemoveAll}
                 /> */}
                 <Form.Group className="mb-3">
-                    <Form.Control type="file" placeholder="Enter image" name="image" onChange={handleOnchangeFile} />
+                  <Form.Control type="file" placeholder="Enter image" name="image" onChange={handleOnchangeFile} />
                 </Form.Group>
               </div>
             </Stack>
@@ -307,7 +303,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   label="Regular Price"
                   placeholder="0.00"
                   value={product.price}
-                  onChange={(e)=>handleChanges(e)}
+                  onChange={(e) => handleChanges(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">TND</InputAdornment>,
@@ -320,7 +316,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
                   label="Quantity"
                   placeholder="0.00"
                   value={product.quantity}
-                  onChange={(e)=>handleChanges(e)}
+                  onChange={(e) => handleChanges(e)}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     startAdornment: <InputAdornment position="start" />,
@@ -332,7 +328,13 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
               <RHFSwitch name="taxes" label="Price includes taxes" />
             </Card>
 
-            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting} onClick={()=>submitProduct()}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+              onClick={() => submitProduct()}
+            >
               {!isEdit ? 'Create Product' : 'Save Changes'}
             </LoadingButton>
           </Stack>

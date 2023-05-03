@@ -42,7 +42,7 @@ export default function AccountGeneral() {
       address: currentUser?.address || '',
       dateOfBirth: currentUser?.dateOfBirth || '',
       gender: currentUser?.gender || '',
-      points: currentUser?.points ? currentUser?.points : 72220,
+      points: currentUser?.points ? currentUser?.points : 0,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required('firstName is required'),
@@ -178,35 +178,6 @@ export default function AccountGeneral() {
                 error={formik.errors.address}
                 helperText={formik.errors.address}
               />
-
-              <TextField
-                name="dateOfBirth"
-                type="date"
-                fullWidth
-                value={formik.values.dateOfBirth}
-                onChange={formik.handleChange}
-                error={formik.errors.dateOfBirth}
-                helperText={formik.errors.dateOfBirth}
-              />
-              <TextField
-                name="gender"
-                select
-                value={formik.values.gender}
-                onChange={formik.handleChange}
-                error={formik.errors.gender}
-                helperText={formik.errors.gender}
-                variant="outlined"
-                label="Gender"
-                fullWidth
-                placeholder="enter your gender"
-                style={{ textAlign: 'start' }}
-              >
-                {genderType.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>

@@ -132,7 +132,7 @@ export const userNavConfig = [
       // Recommandation
       {
         title: 'Recommandation',
-        path: PATH_DASHBOARD.user.root,
+        path: PATH_DASHBOARD.recommandation.lists,
         icon: ICONS.user,
         // children: [{ title: 'rrrrr', path: PATH_DASHBOARD.user.profile }],
       },

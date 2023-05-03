@@ -44,21 +44,21 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
 
   const edit = () => {
     navigate(`/dashboard/e-commerce/product/edit/${_id}`);
-  }
+  };
 
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
   };
-  const deleteProduct = async() => {
+  const deleteProduct = async () => {
     try {
       const response = await axios.delete(`http://localhost:5000/product/delete/${_id}`);
       window.location.reload();
-      toast.success("Product deleted successfully")
-    } catch(e) {
+      toast.success('Product deleted successfully');
+    } catch (e) {
       console.log(e);
-      toast.error("Error deleting product")
+      toast.error('Error deleting product');
     }
-  }
+  };
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
@@ -75,7 +75,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
       <TableCell>{fDate(date)}</TableCell>
 
       <TableCell align="center">
-      <Typography variant="subtitle2" noWrap>
+        <Typography variant="subtitle2" noWrap>
           {quantity}
         </Typography>
       </TableCell>
@@ -101,12 +101,10 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
               <MenuItem
                 onClick={() => {
                   edit();
-                  
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />
                 Edit
-                
               </MenuItem>
             </>
           }

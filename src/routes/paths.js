@@ -40,6 +40,9 @@ export const PATH_DASHBOARD = {
     doctors: path(ROOTS_DASHBOARD, '/appointment/doctors'),
     calendarN: path(ROOTS_DASHBOARD, '/appointment/calendarN'),
   },
+  recommandation: {
+    lists: path(ROOTS_DASHBOARD, '/recommandation/list'),
+  },
   question: {
     forum: path(ROOTS_DASHBOARD, '/question/forum'),
     forumN: path(ROOTS_DASHBOARD, '/question/forumN'),
@@ -50,7 +53,7 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/cxpForm/list'),
     addCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/addCxpForm/:id'),
     updateCxpForm: path(ROOTS_DASHBOARD, '/cxpForm/updateCxpForm/:id'),
-    wasteForm : path(ROOTS_DASHBOARD, '/cxpForm/wasteForm/:id'),
+    wasteForm: path(ROOTS_DASHBOARD, '/cxpForm/wasteForm/:id'),
   },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
@@ -87,8 +90,8 @@ export const PATH_DASHBOARD = {
     checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
     basket: path(ROOTS_DASHBOARD, '/e-commerce/basket'),
     order: path(ROOTS_DASHBOARD, '/e-commerce/order'),
-    orderList : path(ROOTS_DASHBOARD, '/e-commerce/orderList'),
-    showProducts : path(ROOTS_DASHBOARD, '/e-commerce/showProducts/:id'),
+    orderList: path(ROOTS_DASHBOARD, '/e-commerce/orderList'),
+    showProducts: path(ROOTS_DASHBOARD, '/e-commerce/showProducts/:id'),
     new: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
     view: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}`),
     edit: (id) => path(ROOTS_DASHBOARD, `/e-commerce/product/edit/${id}`),

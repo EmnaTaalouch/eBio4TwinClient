@@ -4,6 +4,7 @@
 /* eslint-disable no-unused-expressions */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserApi } from '../../actions/userAction';
+import { dispatch } from '../store';
 
 export const userRegister = createAsyncThunk('user/register', async (user) => await UserApi.register(user));
 export const fetchUsersList = createAsyncThunk('user/listUsers', async () => {
@@ -11,13 +12,12 @@ export const fetchUsersList = createAsyncThunk('user/listUsers', async () => {
   return result;
 });
 
-
-
 const initialState = {
   currentUser: null,
   users: [],
   loading: false,
   step: false,
+  error: null,
 };
 const userSlice = createSlice({
   name: 'user',
@@ -25,7 +25,7 @@ const userSlice = createSlice({
   reducers: {
     addUser: (state, action) => {
       state.currentUser = action.payload;
-      state.step = true;
+      state.step = false;
     },
     createUserList: (state, action) => {
       state.users.push(action.payload);
@@ -37,6 +37,13 @@ const userSlice = createSlice({
       state.users = state.users.map((item) => {
         item._id === action.payload._id ? action.payload : item;
       });
+    },
+    startLoading(state) {
+      state.step = true;
+    },
+    hasError(state, action) {
+      state.step = false;
+      state.error = action.payload;
     },
     removeUserFromList: (state, action) => {
       state.users = state.users.filter((item) => item._id !== action.payload._id);
@@ -60,5 +67,20 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser, createUserList, updateUserFromList, removeUserFromList, addUserList,updateCurrentUser } = userSlice.actions;
+export const { addUser, createUserList, updateUserFromList, removeUserFromList, addUserList, updateCurrentUser } =
+  userSlice.actions;
 export default userSlice.reducer;
+
+// ----------------------------------------------------------------------
+
+export function updateUserProfilling(userId, updatedProfilling) {
+  return async () => {
+    dispatch(userSlice.actions.startLoading());
+    try {
+      const response = await UserApi.editUserProfilling(userId, updatedProfilling);
+      dispatch(userSlice.actions.addUser(response));
+    } catch (error) {
+      dispatch(userSlice.actions.hasError(error));
+    }
+  };
+}
