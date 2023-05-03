@@ -96,7 +96,7 @@ export default function AppointmentList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (step) {
+    if (currentUser) {
       dispatch(fetchAppointmentByClient(currentUser?._id));
     }
   }, [dispatch, currentUser]);
