@@ -23,7 +23,7 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { _id , name, cover, price, status, priceSale,description,quantity } = product;
+  const { _id , name, image, price, status, priceSale,description,quantity } = product;
 
   const linkTo = PATH_DASHBOARD.eCommerce.view(paramCase(name));
 
@@ -73,7 +73,7 @@ export default function ShopProductCard({ product }) {
             {status}
           </Label>
         )}
-        <Image alt={name} src={cover} ratio="1/1" />
+        <Image alt={name} src={image.url} ratio="1/1" />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
