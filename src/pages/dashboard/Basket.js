@@ -44,7 +44,7 @@ const Basket = () => {
   const deletFromBasket = async (id) => {
     try {
       console.log(id);
-      const response = await orderApi.deleteFromBasket(userId, id)
+      const response = await orderApi.deleteFromBasket(userId,id)
       fetchBasket();
       console.log(response)
     } catch (error) {

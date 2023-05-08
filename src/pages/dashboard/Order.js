@@ -88,13 +88,16 @@ const Order = () => {
   const [consumptionDate, setConsumptionDate] = useState(new Date());
   const [members, setMembers] = useState(1);
   const [alertMessage, setAlertMessage] = useState('');
+  const [deliverySpot, setDeliverySpot] = useState(' ');
+  
 
   const totalPrice = products.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
-  const handleCreateOrder = async () => {
+  const handleCreateOrder = async ( ) => {
     try {
-      const response = await orderApi.createOrder(currentUser._id, consumptionDate,
-        members);
+      console.log(deliverySpot);
+      const response = await orderApi.createOrder(currentUser._id,consumptionDate,members,deliverySpot);
+        console.log(deliverySpot);
       setAlertMessage(`Order submitted successfuly !  Thank you !! `);
       if (response.success) {
         OneKPlusOutlined.log(response);
@@ -116,7 +119,7 @@ const Order = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                Order n°
+                Order 
               </Typography>
               {products.map((product) => (
                 <Box key={product._id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -143,9 +146,23 @@ const Order = () => {
         <Grid item xs={12}>
           <Card>
             <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Delivery information
-              </Typography>
+            <Box sx={{ mt: 2 }}>
+                <Typography variant="subtitle1" gutterBottom value={deliverySpot}
+                  onChange={(e) => setDeliverySpot(e.target.value)}>
+                  Delivery Spot
+                </Typography>
+
+
+                <TextField
+                  id="delivery-place"
+                  type="string"
+                  value={deliverySpot}
+                  onChange={(e) => setDeliverySpot(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
               <Box sx={{ mt: 2 }}>
                 <Typography variant="subtitle1" gutterBottom value={consumptionDate}
                   onChange={(e) => setConsumptionDate(e.target.value)}>
