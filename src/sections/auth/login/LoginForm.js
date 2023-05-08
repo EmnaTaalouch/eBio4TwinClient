@@ -58,6 +58,9 @@ export default function LoginForm() {
       if (currentUser.role === 'user') {
       navigate('/dashboard/e-commerce/shop');
       }
+      if (currentUser.role === 'delivrer') {
+      navigate('/dashboard/e-commerce/delivery');
+      }
       location.reload();
       
     } catch (err) {
