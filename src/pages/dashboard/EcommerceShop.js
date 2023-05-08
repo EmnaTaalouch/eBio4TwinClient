@@ -67,7 +67,7 @@ export default function EcommerceShop() {
   useEffect(() => {
     dispatch(getProducts());
     const token = localStorage.getItem('token');
-    console.log(currentUser._id);
+    // console.log(currentUser._id);
     tryFetch();
   }, [dispatch]);
 
