@@ -221,7 +221,13 @@ export const farmerNavConfig = [
   {
     subheader: 'Account Management',
     items: [
-      { title: 'Manage products', path: PATH_DASHBOARD.eCommerce.list, icon: ICONS.items },
+      {
+        title: 'Recommandation',
+        path: PATH_DASHBOARD.recommandation.lists,
+        icon: ICONS.user,
+        // children: [{ title: 'rrrrr', path: PATH_DASHBOARD.user.profile }],
+      },
+      { title: 'Manage products', path: PATH_DASHBOARD.eCommerce.list, icon: ICONS.booking },
       { title: 'Add product', path: PATH_DASHBOARD.eCommerce.new, icon: ICONS.blog },
     ],
   },
