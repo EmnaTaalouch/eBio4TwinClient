@@ -14,13 +14,13 @@ export const orderApi = {
   
     return data;
   },
-  async deleteFromBasket( userId , productId){
+  async deleteFromBasket( userId ,productId){
     const {data} = await api.delete(`/delete/${userId}` , {productId} );
   
     return data;
   },
-  async createOrder( userId ,consumptionDate,members){
-    const {data} = await api.post(`/createOrder/${userId}` , {consumptionDate} , {members} );
+  async createOrder( userId , consumptionDate , members , deliverySpot ){
+    const {data} = await api.post(`/createOrder/${userId}` , {consumptionDate , members , deliverySpot} );
   
     return data;
   },
@@ -32,6 +32,12 @@ export const orderApi = {
   async getOrderById(orderId ){
     
     const {data} = await api.get(`/order/${orderId}` );
+  
+    return data;
+  },
+  async updateState(orderId ){
+    
+    const {data} = await api.post(`/updateState/${orderId}` );
   
     return data;
   }

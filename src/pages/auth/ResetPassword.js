@@ -30,6 +30,8 @@ export default function ResetPassword() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
 
+ 
+
   return (
     <Page title="Reset Password" sx={{ height: 1 }}>
       <RootStyle>
