@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from 'axios';
 
-export const api = axios.create({ baseURL: 'http://localhost:5000/user', responseType: 'json' });
+export const api = axios.create({ baseURL: 'https://ebio-backend.onrender.com/user', responseType: 'json' });
 
 /* emna */
 export const UserApi = {

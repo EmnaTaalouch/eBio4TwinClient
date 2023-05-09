@@ -1,5 +1,6 @@
 {
   "name": "eBio React-Project",
+  "proxy": "https://ebio-backend.onrender.com",
   "author": "Emna taalouch",
   "version": "3.3.0",
   "description": "Javascript Version",

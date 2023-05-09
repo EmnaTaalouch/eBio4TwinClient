@@ -42,7 +42,7 @@ export default function EcommerceProductEdit() {
 
 
     const getProductFunction = async () => {
-      const response = await axios.get(`http://localhost:5000/product/getProduct/${param.id}`);
+      const response = await axios.get(`https://ebio-backend.onrender.com/product/getProduct/${param.id}`);
       setProduct(response.data);
       console.log(response.data);
     }

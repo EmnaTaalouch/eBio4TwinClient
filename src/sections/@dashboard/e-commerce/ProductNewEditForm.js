@@ -201,7 +201,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
     setProduct({ ...product, farmer: currentUser._id });
     try {
       if (product && product.price !== 0 && product.quantity !== 0 && product.name !== ''){
-      const res = await axios.post('http://localhost:5000/product/add', product);
+      const res = await axios.post('https://ebio-backend.onrender.com/product/add', product);
       navigate('/dashboard/e-commerce/list');
       console.log(res);
       }else{

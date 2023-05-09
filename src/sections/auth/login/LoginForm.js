@@ -44,7 +44,7 @@ export default function LoginForm() {
     };
   
     try {
-      const result = await axios.post('http://localhost:5000/user/login', bodyToSend);
+      const result = await axios.post('https://ebio-backend.onrender.com/user/login', bodyToSend);
       console.log(result.data);
       localStorage.setItem('token', JSON.stringify(result.data.token));
       localStorage.setItem('email', JSON.stringify(result.data.email));

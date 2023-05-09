@@ -111,7 +111,7 @@ export default function EcommerceShop() {
   };
 
   const tryFetch = async () => {
-    const response = await axios.get('http://localhost:5000/product/list');
+    const response = await axios.get('https://ebio-backend.onrender.com/product/list');
     console.log(response.data);
     setProds(response.data);
   };
