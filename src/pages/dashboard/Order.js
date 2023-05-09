@@ -9,7 +9,7 @@ import { OneKPlusOutlined } from '@mui/icons-material';
 import Basket from './Basket';
 
 import { orderApi } from '../../actions/basketAction';
-import { cxpApi } from '../../actions/cxpAction';
+import { CxpApi } from '../../actions/cxpAction';
 import { PATH_DASHBOARD } from '../../routes/paths';
 
 const styles = {
@@ -71,7 +71,7 @@ const Order = () => {
 
   const fetchWasteForm = async () => {
     try {
-      const response = await cxpApi.displayWasteForm(userId)
+      const response = await CxpApi.displayWasteForm(userId)
       setWasteForm(response.products);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
