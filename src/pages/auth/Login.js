@@ -84,12 +84,7 @@ export default function Login() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
-            <Image
-              visibleByDefault
-              disabledEffect
-              alt="login"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
-            />
+            <Image visibleByDefault disabledEffect alt="login" src="https://i.imgur.com/X1MYkDN.png" />
           </SectionStyle>
         )}
 

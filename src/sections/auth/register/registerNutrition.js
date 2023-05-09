@@ -22,6 +22,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import Iconify from '../../../components/Iconify';
 import { UserApi } from '../../../actions/userAction';
+import { PATH_AUTH } from '../../../routes/paths';
 
 // sharedsharedComponents
 //
@@ -95,7 +96,7 @@ export default function RegisterNutrition({ setTap, role }) {
       try {
         const result = await UserApi.register({ ...formData, role });
         toast.success('Your account has been successfully created');
-        navigate('/login');
+        navigate(PATH_AUTH.login);
       } catch (err) {
         toast.error(err.response.data.message);
       }

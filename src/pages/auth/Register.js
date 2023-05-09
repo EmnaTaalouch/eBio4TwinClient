@@ -99,12 +99,7 @@ export default function Register() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Manage the job more effectively with Minimal
             </Typography>
-            <Image
-              visibleByDefault
-              disabledEffect
-              alt="register"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_register.png"
-            />
+            <Image visibleByDefault disabledEffect alt="register" src="https://i.imgur.com/X1MYkDN.png" />
           </SectionStyle>
         )}
 

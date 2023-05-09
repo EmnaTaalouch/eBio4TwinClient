@@ -5,7 +5,7 @@ import { Grid, Link, Divider, Container, Typography, Stack } from '@mui/material
 // routes
 import { PATH_PAGE } from '../../routes/paths';
 // components
-import Logo from '../../components/Logo';
+import Logo, { LogoG } from '../../components/Logo';
 import SocialsButton from '../../components/SocialsButton';
 
 // ----------------------------------------------------------------------
@@ -53,12 +53,12 @@ export default function MainFooter() {
           sx={{ textAlign: { xs: 'center', md: 'left' } }}
         >
           <Grid item xs={12} sx={{ mb: 3 }}>
-            <Logo sx={{ mx: { xs: 'auto', md: 'inherit' } }} />
+            <LogoG />
           </Grid>
           <Grid item xs={8} md={3}>
             <Typography variant="body2" sx={{ pr: { md: 5 } }}>
-              The starting point for your next project with Minimal UI Kit, built on the newest
-              version of Material-UI ©, ready to be customized to your style.
+              The starting point for your next project with eBio, built on the newest version of eBio ©, ready to be
+              customized to your style.
             </Typography>
 
             <Stack
@@ -71,11 +71,7 @@ export default function MainFooter() {
           </Grid>
 
           <Grid item xs={12} md={7}>
-            <Stack
-              spacing={5}
-              direction={{ xs: 'column', md: 'row' }}
-              justifyContent="space-between"
-            >
+            <Stack spacing={5} direction={{ xs: 'column', md: 'row' }} justifyContent="space-between">
               {LINKS.map((list) => (
                 <Stack key={list.headline} spacing={2}>
                   <Typography component="p" variant="overline">
