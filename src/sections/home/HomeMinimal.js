@@ -100,14 +100,16 @@ export default function HomeMinimal() {
         >
           <m.div variants={varFade().inUp}>
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
-              Minimal
+              eBio
             </Typography>
           </m.div>
           <m.div variants={varFade().inDown}>
-            <Typography variant="h2">What minimal helps you?</Typography>
+            <Typography variant="h2">Manage your food, reduce your waste, and improve your health with us</Typography>
           </m.div>
         </Box>
 
+        {/*   
+    
         <Box
           sx={{
             display: 'grid',
@@ -143,6 +145,7 @@ export default function HomeMinimal() {
             </m.div>
           ))}
         </Box>
+    */}
       </Container>
     </RootStyle>
   );

@@ -19,10 +19,10 @@ const menuConfig = [
     path: '/',
   },
   {
-    title: 'Pages',
+    title: 'Contact',
     path: '/pages',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
-    children: [
+    /* children: [
       {
         subheader: 'Other',
         items: [
@@ -55,10 +55,10 @@ const menuConfig = [
         subheader: 'Dashboard',
         items: [{ title: 'Dashboard', path: PATH_AFTER_LOGIN }],
       },
-    ],
+    ], */
   },
   {
-    title: 'Documentation',
+    title: 'About us',
     icon: <Iconify icon={'eva:book-open-fill'} {...ICON_SIZE} />,
     path: PATH_DOCS,
   },
