@@ -54,9 +54,10 @@ const OrderList = () => {
               </Button>
             </TableCell>
             <TableCell>
-              <Button variant="contained" onClick={() => navigate(`/dashboard/cxpForm/wasteForm/${order._id}`)}>
+              {!order.done && <Button variant="contained" onClick={() => navigate(`/dashboard/cxpForm/wasteForm/${order._id}`)}>
                 Waste Food
-              </Button>
+              </Button>}
+              
             </TableCell>
           </TableRow>
         ))}

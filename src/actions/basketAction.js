@@ -20,7 +20,7 @@ export const orderApi = {
     return data;
   },
   async createOrder( userId ,consumptionDate,members){
-    const {data} = await api.post(`/createOrder/${userId}` , {consumptionDate} , {members} );
+    const {data} = await api.post(`/createOrder/${userId}` , {consumptionDate, members} );
   
     return data;
   },
