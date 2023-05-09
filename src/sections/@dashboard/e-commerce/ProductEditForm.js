@@ -74,10 +74,10 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
-    images: Yup.array().min(1, 'Images is required'),
-    price: Yup.number().moreThan(0, 'Price should not be $0.00'),
+    // name: Yup.string().required('Name is required'),
+    // description: Yup.string().required('Description is required'),
+    // images: Yup.array().min(1, 'Images is required'),
+    // price: Yup.number().moreThan(0, 'Price should not be $0.00'),
   });
 
   const defaultValues = useMemo(

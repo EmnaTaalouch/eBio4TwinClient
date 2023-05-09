@@ -38,34 +38,36 @@ export default function LoginForm() {
   };
 
   const handleSubmit = async () => {
-    console.log(email, password);
-
     const bodyToSend = {
       email,
       password,
     };
-
+  
     try {
       const result = await axios.post('http://localhost:5000/user/login', bodyToSend);
       console.log(result.data);
       localStorage.setItem('token', JSON.stringify(result.data.token));
       localStorage.setItem('email', JSON.stringify(result.data.email));
-      const currentUser = await UserApi.getUserById((result.data.token));
+      const currentUser = await UserApi.getUserById(result.data.token);
       console.log(currentUser);
       if (currentUser.role === 'farmer') {
-      navigate('/dashboard/e-commerce/list');
+        navigate('/dashboard/e-commerce/list');
       }
       if (currentUser.role === 'user') {
-      navigate('/dashboard/e-commerce/shop');
+        navigate('/dashboard/e-commerce/shop');
       }
-      if (currentUser.role === 'delivrer') {
-      navigate('/dashboard/e-commerce/delivery');
+      if (currentUser.role === 'deliverer') {
+        navigate('/dashboard/e-commerce/delivery');
       }
       location.reload();
-      
     } catch (err) {
-      console.log(err);
-      toast.error('Invalid email or password');
+      if (err.response) {
+        console.log(err.response.data);
+        toast.error(err.response.data.error);
+      } else {
+        console.log(err);
+        toast.error('An error occurred');
+      }
     }
   };
 
