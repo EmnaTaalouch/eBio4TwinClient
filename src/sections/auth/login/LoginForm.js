@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable */
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -17,6 +17,8 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
+import { toast } from 'react-toastify';
+import { UserApi } from 'src/actions/userAction';
 
 // ----------------------------------------------------------------------
 
@@ -36,22 +38,36 @@ export default function LoginForm() {
   };
 
   const handleSubmit = async () => {
-    console.log(email, password);
-
     const bodyToSend = {
       email,
       password,
     };
-
+  
     try {
-      const result = await axios.post('http://localhost:5000/user/login', bodyToSend);
+      const result = await axios.post('https://ebio-backend.onrender.com/user/login', bodyToSend);
       console.log(result.data);
       localStorage.setItem('token', JSON.stringify(result.data.token));
       localStorage.setItem('email', JSON.stringify(result.data.email));
+      const currentUser = await UserApi.getUserById(result.data.token);
+      console.log(currentUser);
+      if (currentUser.role === 'farmer') {
+        navigate('/dashboard/e-commerce/list');
+      }
+      if (currentUser.role === 'user') {
+        navigate('/dashboard/e-commerce/shop');
+      }
+      if (currentUser.role === 'deliverer') {
+        navigate('/dashboard/e-commerce/delivery');
+      }
       location.reload();
-      navigate(PATH_DASHBOARD.general.app);
     } catch (err) {
-      console.log(err);
+      if (err.response) {
+        console.log(err.response.data);
+        toast.error(err.response.data.error);
+      } else {
+        console.log(err);
+        toast.error('An error occurred');
+      }
     }
   };
 

@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+/* eslint-disable */
+import { useEffect, useState } from 'react';
 import { paramCase } from 'change-case';
 import { useParams, useLocation } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 // @mui
-import { Container } from '@mui/material';
+import { Container, Alert } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProducts } from '../../redux/slices/product';
@@ -14,8 +16,15 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import ProductNewEditForm from '../../sections/@dashboard/e-commerce/ProductNewEditForm';
+import { use } from 'i18next';
+import { UserApi } from '../../actions/userAction';
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
+
+const SuccessAlert = styled(Alert)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
 
 export default function EcommerceProductCreate() {
   const { themeStretch } = useSettings();
@@ -24,7 +33,34 @@ export default function EcommerceProductCreate() {
   const { name } = useParams();
   const { products } = useSelector((state) => state.product);
   const isEdit = pathname.includes('edit');
- // const currentProduct = products.find((product) => paramCase(product.name) === name);
+  const [showMessage, setShowMessage] = useState(false);
+  const [user, setUser] = useState({name:'',});
+
+const getCurrentUser = async () => {
+  try {
+    const token = JSON.parse(localStorage.getItem('token'));
+    console.log(token);
+    const { data } = await axios.get(`https://ebio-backend.onrender.com/user/profile/${token}`);
+    const namee = JSON.stringify(data.firstName);
+    console.log(namee);
+    const user = await setUser({name:namee})
+    console.log(user);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+useEffect(() => {
+  getCurrentUser();
+  console.log(user);
+}, []);
+
+  useEffect(() => {
+    setShowMessage(true);
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 10000);
+  }, []);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -45,7 +81,15 @@ export default function EcommerceProductCreate() {
           ]}
         />
 
-        <ProductNewEditForm isEdit={isEdit}  />
+        {showMessage && (
+          <SuccessAlert variant="filled" severity="success">
+            Hey <strong> mr </strong>,
+            <br />
+            If you don't have a picture for your product, our eBio will set one for, a high qualty one!
+          </SuccessAlert>
+        )}
+
+        <ProductNewEditForm isEdit={isEdit} />
         {/* currentProduct={currentProduct} */}
       </Container>
     </Page>

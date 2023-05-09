@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import { paramCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
@@ -38,7 +39,8 @@ import {
 } from '../../components/table';
 // sections
 import { ProductTableRow, ProductTableToolbar } from '../../sections/@dashboard/e-commerce/product-list';
-
+import { toast } from 'react-toastify';
+import axios from 'axios';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -102,16 +104,28 @@ export default function EcommerceProductList() {
   };
 
   const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
+    const deleteRow = tableData.filter((row) => row._id !== id);
     setSelected([]);
     setTableData(deleteRow);
+    
   };
 
-  const handleDeleteRows = (selected) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
-    setSelected([]);
-    setTableData(deleteRows);
+  const handleDeleteRows = async (selected) => {
+    try {
+      await Promise.all(selected.map(async (productId) => {
+        const response = await axios.delete(`https://ebio-backend.onrender.com/product/delete/${productId}`);
+        if (response.data.message) {
+          setTableData((prevData) => prevData.filter((row) => row._id !== productId));
+          toast.success(response.data.message);
+        }
+      }));
+      setSelected([]);
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
   };
+  
 
   const handleEditRow = (id) => {
     navigate(PATH_DASHBOARD.eCommerce.edit(paramCase(id)));
@@ -165,7 +179,7 @@ export default function EcommerceProductList() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row._id)
                     )
                   }
                   actions={
@@ -189,7 +203,7 @@ export default function EcommerceProductList() {
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row._id)
                     )
                   }
                 />
@@ -202,9 +216,9 @@ export default function EcommerceProductList() {
                         <ProductTableRow
                           key={row._id}
                           row={row}
-                          selected={selected.includes(row.id)}
-                          onSelectRow={() => onSelectRow(row.id)}
-                          onDeleteRow={() => handleDeleteRow(row.id)}
+                          selected={selected.includes(row._id)}
+                          onSelectRow={() => onSelectRow(row._id)}
+                          onDeleteRow={() => handleDeleteRow(row._id)}
                           onEditRow={() => handleEditRow(row.name)}
                         />
                       ) : (

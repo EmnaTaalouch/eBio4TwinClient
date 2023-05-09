@@ -67,7 +67,7 @@ export default function EcommerceShop() {
   useEffect(() => {
     dispatch(getProducts());
     const token = localStorage.getItem('token');
-    console.log(currentUser._id);
+    // console.log(currentUser._id);
     tryFetch();
   }, [dispatch]);
 
@@ -111,7 +111,7 @@ export default function EcommerceShop() {
   };
 
   const tryFetch = async () => {
-    const response = await axios.get('http://localhost:5000/product/list');
+    const response = await axios.get('https://ebio-backend.onrender.com/product/list');
     console.log(response.data);
     setProds(response.data);
   };

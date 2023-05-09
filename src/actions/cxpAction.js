@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const api = axios.create({ baseURL: 'http://localhost:5000/cxpForm', responseType: 'json' });
-export const apiWaste = axios.create({ baseURL: 'http://localhost:5000/wasteForm', responseType: 'json' });
+export const api = axios.create({ baseURL: 'https://ebio-backend.onrender.com/cxpForm', responseType: 'json' });
+export const apiWaste = axios.create({ baseURL: 'https://ebio-backend.onrender.com/wasteForm', responseType: 'json' });
 export const CxpApi = {
   async getCxp() {
     const { data } = await api.get('/listForms');

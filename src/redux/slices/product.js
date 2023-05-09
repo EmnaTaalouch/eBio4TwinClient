@@ -217,11 +217,11 @@ export function getProducts() {
     dispatch(slice.actions.startLoading());
     const token = localStorage.getItem('token');
     const tokenss = JSON.parse(token);
-    const { data } = await axios.get(`http://localhost:5000/user/profile/${tokenss}`);
+    const { data } = await axios.get(`https://ebio-backend.onrender.com/user/profile/${tokenss}`);
     console.log(data);
     const currentUser = data._id;
     try {
-      const response = await axios.get(`http://localhost:5000/product/farmer?farmer=${currentUser}`);
+      const response = await axios.get(`https://ebio-backend.onrender.com/product/farmer?farmer=${currentUser}`);
       console.log(response.data,"farmers");
       dispatch(slice.actions.getProductsSuccess(response.data));
     } catch (error) {

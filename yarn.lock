@@ -2319,6 +2319,11 @@
     "@luma.gl/gltools" "8.5.10"
     "probe.gl" "^3.4.0"
 
+"@mapbox/corslite@0.0.7":
+  "integrity" "sha512-w/uS474VFjmqQ7fFWIMZINQM1BAQxDLuoJaZZIPES1BmeYpCtlh9MtbFxKGGDAsfvut8/HircIsVvEYRjQ+iMg=="
+  "resolved" "https://registry.npmjs.org/@mapbox/corslite/-/corslite-0.0.7.tgz"
+  "version" "0.0.7"
+
 "@mapbox/geojson-rewind@^0.5.1":
   "integrity" "sha512-eL7fMmfTBKjrb+VFHXCGv9Ot0zc3C0U+CwXo1IrP+EPwDczLoXv34Tgq3y+2mPSFNVUXgU42ILWJTC7145KPTA=="
   "resolved" "https://registry.npmjs.org/@mapbox/geojson-rewind/-/geojson-rewind-0.5.1.tgz"
@@ -2351,6 +2356,11 @@
   "integrity" "sha1-ioP5M1x4YO/6Lu7KJUMyqgru2PI="
   "resolved" "https://registry.npmjs.org/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz"
   "version" "0.1.0"
+
+"@mapbox/polyline@^0.2.0":
+  "integrity" "sha512-GCddO0iw6AzOQqZgBmjEQI9Pgo40/yRgkTkikGctE01kNBN0ThWYuAnTD+hRWrAWMV6QJ0rNm4m8DAsaAXE7Pg=="
+  "resolved" "https://registry.npmjs.org/@mapbox/polyline/-/polyline-0.2.0.tgz"
+  "version" "0.2.0"
 
 "@mapbox/tiny-sdf@^1.1.0":
   "integrity" "sha512-cD8A/zJlm6fdJOk6DqPUV8mcpyJkRz2x2R+/fYcWDYG3oWbG7/L7Yl/WqQ1VZCjnL9OTIMAn6c+BC5Eru4sQEw=="
@@ -2680,6 +2690,11 @@
   "version" "3.6.0"
   dependencies:
     "@swc/helpers" "^0.4.14"
+
+"@react-leaflet/core@^2.1.0":
+  "integrity" "sha512-Qk7Pfu8BSarKGqILj4x7bCSZ1pjuAPZ+qmRwH5S7mDS91VSbVVsJSrW4qA+GPrro8t69gFYVMWb1Zc4yFmPiVg=="
+  "resolved" "https://registry.npmjs.org/@react-leaflet/core/-/core-2.1.0.tgz"
+  "version" "2.1.0"
 
 "@react-pdf/font@^2.1.1":
   "integrity" "sha512-4XwdD4S9HoiuhUQZvCGTFz+baYqowUcq7+HknRlMEk0HQOL3Rnnqe7Sxlv8ap208bHUsdsQFMjxlW8D0BS6C0w=="
@@ -4309,7 +4324,7 @@
   "resolved" "https://registry.npmjs.org/blob/-/blob-0.0.4.tgz"
   "version" "0.0.4"
 
-"bluebird@^3.5.5":
+"bluebird@^3.5.2", "bluebird@^3.5.5":
   "integrity" "sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg=="
   "resolved" "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   "version" "3.7.2"
@@ -8344,6 +8359,27 @@
   dependencies:
     "language-subtag-registry" "~0.3.2"
 
+"leaflet-control-geocoder@^2.4.0":
+  "integrity" "sha512-b2QlxuFd40uIDbnoUI3U9fzfnB4yKUYlmsXjquJ2d2YjoJqnyVYcIJeErAVv3kPvX3nI0gzvBq1XHMgSVFrGkQ=="
+  "resolved" "https://registry.npmjs.org/leaflet-control-geocoder/-/leaflet-control-geocoder-2.4.0.tgz"
+  "version" "2.4.0"
+  optionalDependencies:
+    "open-location-code" "^1.0.0"
+
+"leaflet-routing-machine@^3.2.12":
+  "integrity" "sha512-HLde58G1YtD9xSIzZavJ6BPABZaV1hHeGst8ouhzuxmSC3s32NVtADT+njbIUMW1maHRCrsgTk/E4hz5QH7FrA=="
+  "resolved" "https://registry.npmjs.org/leaflet-routing-machine/-/leaflet-routing-machine-3.2.12.tgz"
+  "version" "3.2.12"
+  dependencies:
+    "@mapbox/corslite" "0.0.7"
+    "@mapbox/polyline" "^0.2.0"
+    "osrm-text-instructions" "^0.13.2"
+
+"leaflet@^1.6.0", "leaflet@^1.9.0", "leaflet@^1.9.3":
+  "integrity" "sha512-iB2cR9vAkDOu5l3HAay2obcUHZ7xwUBBjph8+PGtmW/2lYhbLizWtG7nTeYht36WfOslixQF9D/uSIzhZgGMfQ=="
+  "resolved" "https://registry.npmjs.org/leaflet/-/leaflet-1.9.3.tgz"
+  "version" "1.9.3"
+
 "leven@^3.1.0":
   "integrity" "sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A=="
   "resolved" "https://registry.npmjs.org/leven/-/leven-3.1.0.tgz"
@@ -9003,7 +9039,7 @@
     "lower-case" "^2.0.2"
     "tslib" "^2.0.3"
 
-"node-fetch@^2.6.1", "node-fetch@2.6.7":
+"node-fetch@^2.6.0", "node-fetch@^2.6.1", "node-fetch@2.6.7":
   "integrity" "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="
   "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
   "version" "2.6.7"
@@ -9014,6 +9050,14 @@
   "integrity" "sha512-Fcvtbb+zBcZXbTTVwqGA5W+MKBj56UjVRevvchv5XrcyXbmNdesfZL37nlcWOfpgHhgmxApw3tQbTr4CqNmX4w=="
   "resolved" "https://registry.npmjs.org/node-forge/-/node-forge-1.2.1.tgz"
   "version" "1.2.1"
+
+"node-geocoder@^4.2.0":
+  "integrity" "sha512-ZvUiOHWHLVGlrYPvazXj+VQ9oK+EOMinh/5vWoBwOQiV0eCU7GPtEWrMRNnKvmBVOzZHb1eFe9uoKMFeyygMVA=="
+  "resolved" "https://registry.npmjs.org/node-geocoder/-/node-geocoder-4.2.0.tgz"
+  "version" "4.2.0"
+  dependencies:
+    "bluebird" "^3.5.2"
+    "node-fetch" "^2.6.0"
 
 "node-int64@^0.4.0":
   "integrity" "sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs="
@@ -9204,6 +9248,11 @@
   dependencies:
     "mimic-fn" "^2.1.0"
 
+"open-location-code@^1.0.0":
+  "integrity" "sha512-DBm14BSn40Ee241n80zIFXIT6+y8Tb0I+jTdosLJ8Sidvr2qONvymwqymVbHV2nS+1gkDZ5eTNpnOIVV0Kn2fw=="
+  "resolved" "https://registry.npmjs.org/open-location-code/-/open-location-code-1.0.3.tgz"
+  "version" "1.0.3"
+
 "open@^8.0.9", "open@^8.4.0":
   "integrity" "sha512-XgFPPM+B28FtCCgSb9I+s9szOC1vZRSwgWsRUA5ylIxRTgKozqjOCrVOqGsYABPYK5qnfqClxZTFBa8PKt2v6Q=="
   "resolved" "https://registry.npmjs.org/open/-/open-8.4.0.tgz"
@@ -9212,6 +9261,14 @@
     "define-lazy-prop" "^2.0.0"
     "is-docker" "^2.1.1"
     "is-wsl" "^2.2.0"
+
+"opencage-api-client@^1.0.1":
+  "integrity" "sha512-zvAXyOsZ2vq8R0C/JwTw9gQAWS02H79QcNQcLiNBeziVMhBMpM1XU403RS8ElcLDufsZ3ZXp5G56giZaSxDX+A=="
+  "resolved" "https://registry.npmjs.org/opencage-api-client/-/opencage-api-client-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "cross-fetch" "^3.1.5"
+    "dotenv" "^10.0.0"
 
 "optionator@^0.8.1":
   "integrity" "sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA=="
@@ -9236,6 +9293,11 @@
     "prelude-ls" "^1.2.1"
     "type-check" "^0.4.0"
     "word-wrap" "^1.2.3"
+
+"osrm-text-instructions@^0.13.2":
+  "integrity" "sha512-ge4ZTIetMQKAHKq2MwWf83ntzdJN20ndRKRaVNoZ3SkDkBNO99Qddz7r6+hrVx38I+ih6Rk5T1yslczAB6Q9Pg=="
+  "resolved" "https://registry.npmjs.org/osrm-text-instructions/-/osrm-text-instructions-0.13.4.tgz"
+  "version" "0.13.4"
 
 "p-limit@^1.1.0":
   "integrity" "sha512-vvcXsLAJ9Dr5rQOPk7toZQZJApBl2K4J6dANSsEuh6QI41JYcsS/qhTGa9ErIUUgK3WNQoJYvylxvjqmiqEA9Q=="
@@ -10212,6 +10274,11 @@
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.9.7.tgz"
   "version" "6.9.7"
 
+"querystring@^0.2.1":
+  "integrity" "sha512-wkvS7mL/JMugcup3/rMitHmd9ecIGd2lhFhK9N3UUQ450h66d1r3Y9nvXzQAW1Lq+wyx61k/1pfKS5KuKiyEbg=="
+  "resolved" "https://registry.npmjs.org/querystring/-/querystring-0.2.1.tgz"
+  "version" "0.2.1"
+
 "queue-microtask@^1.2.2":
   "integrity" "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="
   "resolved" "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
@@ -10389,7 +10456,7 @@
     "strip-ansi" "^6.0.1"
     "text-table" "^0.2.0"
 
-"react-dom@^0.14.0 || ^15.0.0 || ^16 || ^17", "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0", "react-dom@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0 || ^17.0", "react-dom@^15.x.x || ^16.x.x || ^17.x.x", "react-dom@^16 || ^17", "react-dom@^16.6.0 || ^17.0.0", "react-dom@^16.7.0 || ^17", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.5 || ^17.0.0", "react-dom@^17.0.0", "react-dom@^17.0.2", "react-dom@>=16", "react-dom@>=16.14.0", "react-dom@>=16.3", "react-dom@>=16.6.0", "react-dom@>=16.8", "react-dom@>=16.8 || ^17.0.0 || ^18.0.0", "react-dom@16.x || 17.x":
+"react-dom@^0.14.0 || ^15.0.0 || ^16 || ^17", "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0", "react-dom@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0 || ^17.0", "react-dom@^15.x.x || ^16.x.x || ^17.x.x", "react-dom@^16 || ^17", "react-dom@^16.6.0 || ^17.0.0", "react-dom@^16.7.0 || ^17", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.5 || ^17.0.0", "react-dom@^17.0.0", "react-dom@^17.0.2", "react-dom@^18.0.0", "react-dom@>=16", "react-dom@>=16.14.0", "react-dom@>=16.3", "react-dom@>=16.6.0", "react-dom@>=16.8", "react-dom@>=16.8 || ^17.0.0 || ^18.0.0", "react-dom@16.x || 17.x":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
@@ -10488,6 +10555,13 @@
     "lodash.debounce" "^4.0.8"
     "lodash.throttle" "^4.1.1"
 
+"react-leaflet@^4.2.1":
+  "integrity" "sha512-p9chkvhcKrWn/H/1FFeVSqLdReGwn2qmiobOQGO3BifX+/vV/39qhY8dGqbdcPh1e6jxh/QHriLXr7a4eLFK4Q=="
+  "resolved" "https://registry.npmjs.org/react-leaflet/-/react-leaflet-4.2.1.tgz"
+  "version" "4.2.1"
+  dependencies:
+    "@react-leaflet/core" "^2.1.0"
+
 "react-lifecycles-compat@^3.0.0", "react-lifecycles-compat@^3.0.4":
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
@@ -10556,10 +10630,10 @@
     "prop-types" "^15.6.2"
     "scheduler" "^0.17.0"
 
-"react-redux@^7.2.0", "react-redux@^7.2.1 || ^8.0.0-beta", "react-redux@^7.2.6":
-  "integrity" "sha512-10RPdsz0UUrRL1NZE0ejTkucnclYSgXp5q+tB5SWx2qeG2ZJQJyymgAhwKy73yiL/13btfB6fPr+rgbMAaZIAQ=="
-  "resolved" "https://registry.npmjs.org/react-redux/-/react-redux-7.2.6.tgz"
-  "version" "7.2.6"
+"react-redux@^7.2.0", "react-redux@^7.2.1 || ^8.0.0-beta", "react-redux@^7.2.9":
+  "integrity" "sha512-Gx4L3uM182jEEayZfRbI/G11ZpYdNAnBs70lFVMNdHJI76XYtR+7m0MN+eAs7UHBPhWXcnFPaS+9owSCJQHNpQ=="
+  "resolved" "https://registry.npmjs.org/react-redux/-/react-redux-7.2.9.tgz"
+  "version" "7.2.9"
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@types/react-redux" "^7.1.20"
@@ -10671,7 +10745,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@^0.14.0 || ^15.0.0 || ^16 || ^17", "react@^0.14.0 || ^15.0.0-0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0 || ^17.0", "react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^15.x.x || ^16.x.x || ^17.x.x", "react@^16 || ^17", "react@^16.0.0", "react@^16.6.0 || ^17.0.0", "react@^16.7.0 || ^17", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^16.8.3 || ^17", "react@^16.8.5 || ^17.0.0", "react@^16.8.6 || ^17.0.0", "react@^16.9.0 || ^17.0.0 || 18.0.0-beta", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@>= 16", "react@>= 16.8", "react@>= 16.8.0", "react@>=0.13", "react@>=0.14.0", "react@>=15.0.0", "react@>=16", "react@>=16.14.0", "react@>=16.3", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8 || ^17.0.0 || ^18.0.0", "react@>=16.8.0", "react@16.x || 17.x", "react@17.0.2":
+"react@^0.14.0 || ^15.0.0 || ^16 || ^17", "react@^0.14.0 || ^15.0.0-0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0 || ^17.0", "react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^15.x.x || ^16.x.x || ^17.x.x", "react@^16 || ^17", "react@^16.0.0", "react@^16.6.0 || ^17.0.0", "react@^16.7.0 || ^17", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0", "react@^16.8.6 || ^17.0.0", "react@^16.9.0 || ^17.0.0 || 18.0.0-beta", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@^18.0.0", "react@>= 16", "react@>= 16.8", "react@>= 16.8.0", "react@>=0.13", "react@>=0.14.0", "react@>=15.0.0", "react@>=16", "react@>=16.14.0", "react@>=16.3", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8 || ^17.0.0 || ^18.0.0", "react@>=16.8.0", "react@16.x || 17.x", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
