@@ -95,9 +95,11 @@ const Order = () => {
 
   const handleCreateOrder = async ( ) => {
     try {
+
       console.log(deliverySpot);
       const response = await orderApi.createOrder(currentUser._id,consumptionDate,members,deliverySpot);
         console.log(deliverySpot);
+
       setAlertMessage(`Order submitted successfuly !  Thank you !! `);
       if (response.success) {
         OneKPlusOutlined.log(response);
@@ -182,8 +184,8 @@ const Order = () => {
                 />
               </Box>
               <Box sx={{ mt: 2 }}>
-                <Typography variant="subtitle1" gutterBottom value={members}
-                  onChange={(e) => setMembers(e.target.value)}>
+                <Typography variant="subtitle1" gutterBottom 
+                  >
                   Members
                 </Typography>
                 <TextField
@@ -208,7 +210,7 @@ const Order = () => {
             <Typography variant="h1" style={styles.title}>To fight against food waste, please:</Typography>
             {products.map(product => {
               const foundWasteForm = wasteForm.find(wasteForm => wasteForm.product === product.productId);
-              if (foundWasteForm) {
+              if (foundWasteForm && foundWasteForm.quantityPerPerson) {
                 return (
                   <div key={product.productId}>
                     <Typography variant="h2" style={styles.product}>
@@ -216,7 +218,7 @@ const Order = () => {
                     </Typography>
                     <Typography variant="body1" style={styles.quantity}>
                       {foundWasteForm.quantityPerPerson === 0
-                        ? 'has no limit'
+                        ? ' Try using up leftovers or buying smaller quantities'
                         : `should not exceed ${Math.ceil(foundWasteForm.quantityPerPerson * members)} for all members`}
                     </Typography>
                   </div>

@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableHead, TableBody, TableRow, TableCell, Button, Typography, TextField } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
+import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import { orderApi } from '../../../actions/basketAction';
 import { CxpApi } from '../../../actions/cxpAction'
 
+
 const WasteForm = () => {
     const { id } = useParams()
+    console.log(id)
     const [order, setOrder] = useState();
     const [products, setProducts] = useState([]);
-
+    const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
+    const { enqueueSnackbar } = useSnackbar();
     const userId = currentUser._id
 
     useEffect(() => {
@@ -50,11 +54,10 @@ const WasteForm = () => {
         try {
 
             if (currentUser.wasteFormStatus === true) {
-                
-                const response = await CxpApi.updateWasteForm(userId, { products })
+                const response = await CxpApi.updateWasteForm(userId,id, { products })
             }
             else {
-                const response = await CxpApi.addWasteForm(userId, { products })
+                const response = await CxpApi.addWasteForm(userId,id, { products })
                 
             }
 
@@ -62,6 +65,8 @@ const WasteForm = () => {
 
             // Reset the form
             setProducts([]);
+            navigate('/dashboard/e-commerce/orderList')
+            enqueueSnackbar('Your formula has been passed successfully!', { variant: 'success' });
         } catch (error) {
             console.log(error);
         }

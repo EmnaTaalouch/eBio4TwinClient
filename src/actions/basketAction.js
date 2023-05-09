@@ -19,8 +19,10 @@ export const orderApi = {
   
     return data;
   },
+
   async createOrder( userId , consumptionDate , members , deliverySpot ){
     const {data} = await api.post(`/createOrder/${userId}` , {consumptionDate , members , deliverySpot} );
+
   
     return data;
   },

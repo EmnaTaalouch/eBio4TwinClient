@@ -18,12 +18,12 @@ export const CxpApi = {
     const { data } = await api.put(`/updateForm/${id}`, body);
     return data;
   },
-  async addWasteForm(id,products) {
-    const { data } = await apiWaste.post(`/addWasteForm/${id}`,products)
+  async addWasteForm(id,orderId,products) {
+    const { data } = await apiWaste.post(`/addWasteForm/${id}/${orderId}`,products)
     return data;
   },
-  async updateWasteForm(id,products) {
-    const { data } = await apiWaste.put(`/updateWasteForm/${id}`,products)
+  async updateWasteForm(id,orderId,products) {
+    const { data } = await apiWaste.put(`/updateWasteForm/${id}/${orderId}`,products)
     return data;
   },
   async displayWasteForm(id){
