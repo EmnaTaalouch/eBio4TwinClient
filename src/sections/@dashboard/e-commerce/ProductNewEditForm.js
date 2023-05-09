@@ -82,10 +82,10 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
-    image: Yup.array().min(1, 'Images is required'),
-    price: Yup.number().moreThan(0, 'Price should not be TND0.00'),
+    // name: Yup.string().required('Name is required'),
+    // description: Yup.string().required('Description is required'),
+    // image: Yup.array().min(1, 'Images is required'),
+    // price: Yup.number().moreThan(0, 'Price should not be TND0.00'),
   });
 
   const defaultValues = useMemo(
@@ -139,7 +139,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
-      navigate(PATH_DASHBOARD.eCommerce.list);
+      // navigate(PATH_DASHBOARD.eCommerce.list);
     } catch (error) {
       console.error(error);
     }
@@ -200,10 +200,13 @@ export default function ProductNewEditForm({ isEdit, currentProduct }) {
   const submitProduct = async () => {
     setProduct({ ...product, farmer: currentUser._id });
     try {
+      if (product && product.price !== 0 && product.quantity !== 0 && product.name !== ''){
       const res = await axios.post('http://localhost:5000/product/add', product);
       navigate('/dashboard/e-commerce/list');
       console.log(res);
-      toast.success('Product added successfully');
+      }else{
+        toast.error('Please fill all fields');
+      }
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
