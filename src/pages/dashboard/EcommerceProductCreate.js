@@ -40,9 +40,10 @@ const getCurrentUser = async () => {
   try {
     const token = JSON.parse(localStorage.getItem('token'));
     console.log(token);
-    const { data } = await axios.get(`http://localhost:5000/user/profile/${token}`);
-    console.log(data.firstName);
-    const user = await setUser({name:data.firstName})
+    const { data } = await axios.get(`https://ebio-backend.onrender.com/user/profile/${token}`);
+    const namee = JSON.stringify(data.firstName);
+    console.log(namee);
+    const user = await setUser({name:namee})
     console.log(user);
   } catch (error) {
     console.log(error);

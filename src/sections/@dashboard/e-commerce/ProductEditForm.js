@@ -174,7 +174,7 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
 
   const UpdateProduct = async () => {
     try {
-      const res = await axios.put(`http://localhost:5000/product/edit/${currentProduct._id}`, product);
+      const res = await axios.put(`https://ebio-backend.onrender.com/product/edit/${currentProduct._id}`, product);
       console.log(res);
       toast.success('Product Updated Successfully');
       if (res.status === 200) {
@@ -185,25 +185,6 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
       toast.error('Something went wrong');
     }
   };
-
-  // const handleChanges=(e)=>{
-  //   console.log(e.target.name)
-  //   setProduct({...product,[e.target.name]:e.target.value});
-  //   console.log(product)
-  // };
-  // const test = ()=>{
-  //   console.log(value)
-  //   // setProduct({...product,description:e.value});
-  // }
-  // const submitProduct=async()=> {
-  //   setProduct({...product,farmer:currentUser._id});
-  //   try {
-  //     const res = await axios.post('http://localhost:5000/product/add',product).then(()=>navigate('/dashboard/e-commerce/list'));
-  //     console.log(res);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -235,57 +216,6 @@ export default function ProductEditForm({ isEdit, currentProduct }) {
 
         <Grid item xs={12} md={4}>
           <Stack spacing={3}>
-            {/* <Card sx={{ p: 3 }}>
-              <RHFSwitch name="inStock" label="In stock" />
-
-              <Stack spacing={3} mt={2}>
-                <RHFTextField name="code" label="Product Code" />
-                <RHFTextField name="sku" label="Product SKU" />
-
-                <div>
-                  <LabelStyle>Gender</LabelStyle>
-                  <RHFRadioGroup
-                    name="gender"
-                    options={GENDER_OPTION}
-                    sx={{
-                      '& .MuiFormControlLabel-root': { mr: 4 },
-                    }}
-                  />
-                </div>
-
-                <RHFSelect name="category" label="Category">
-                  {CATEGORY_OPTION.map((category) => (
-                    <optgroup key={category.group} label={category.group}>
-                      {category.classify.map((classify) => (
-                        <option key={classify} value={classify}>
-                          {classify}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </RHFSelect>
-
-                <Controller
-                  name="tags"
-                  control={control}
-                  render={({ field }) => (
-                    <Autocomplete
-                      {...field}
-                      multiple
-                      freeSolo
-                      onChange={(event, newValue) => field.onChange(newValue)}
-                      options={TAGS_OPTION.map((option) => option)}
-                      renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                          <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
-                        ))
-                      }
-                      renderInput={(params) => <TextField label="Tags" {...params} />}
-                    />
-                  )}
-                />
-              </Stack>
-            </Card> */}
 
             <Card sx={{ p: 3 }}>
               <Stack spacing={3} mb={2}>

@@ -113,7 +113,7 @@ export default function EcommerceProductList() {
   const handleDeleteRows = async (selected) => {
     try {
       await Promise.all(selected.map(async (productId) => {
-        const response = await axios.delete(`http://localhost:5000/product/delete/${productId}`);
+        const response = await axios.delete(`https://ebio-backend.onrender.com/product/delete/${productId}`);
         if (response.data.message) {
           setTableData((prevData) => prevData.filter((row) => row._id !== productId));
           toast.success(response.data.message);

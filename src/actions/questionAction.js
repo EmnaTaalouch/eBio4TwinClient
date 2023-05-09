@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const api = axios.create({ baseURL: 'http://localhost:5000/questions', responseType: 'json' });
+export const api = axios.create({ baseURL: 'https://ebio-backend.onrender.com/questions', responseType: 'json' });
 
 /* emna */
 export const QuestionApi = {

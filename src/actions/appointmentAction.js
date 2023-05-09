@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const api = axios.create({ baseURL: 'http://localhost:5000/appointments', responseType: 'json' });
+export const api = axios.create({ baseURL: 'https://ebio-backend.onrender.com/appointments', responseType: 'json' });
 
 /* emna */
 export const AppointmentApi = {

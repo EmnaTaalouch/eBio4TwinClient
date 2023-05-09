@@ -51,7 +51,7 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
   };
   const deleteProduct = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5000/product/delete/${_id}`);
+      const response = await axios.delete(`https://ebio-backend.onrender.com/product/delete/${_id}`);
       window.location.reload();
       toast.success('Product deleted successfully');
     } catch (e) {
