@@ -22,7 +22,7 @@ import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
-const SuccessAlert = styled(Alert)(({ theme }) => ({
+const InfoAlert = styled(Alert)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
@@ -59,7 +59,7 @@ useEffect(() => {
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);
-    }, 10000);
+    }, 6000);
   }, []);
 
   useEffect(() => {
@@ -82,11 +82,12 @@ useEffect(() => {
         />
 
         {showMessage && (
-          <SuccessAlert variant="filled" severity="success">
-            Hey <strong> mr </strong>,
+          <InfoAlert variant="filled" severity="success">
+            <strong> Hey there </strong>,
             <br />
-            If you don't have a picture for your product, our eBio will set one for, a high qualty one!
-          </SuccessAlert>
+            <p>Now you will add a product</p><br />
+            <p>If you don't have a picture for your product, eBio will set one, a high qualty one!</p>
+          </InfoAlert>
         )}
 
         <ProductNewEditForm isEdit={isEdit} />
